@@ -1,10 +1,14 @@
-import Hero from '../components/hero';
+import CircularText from "@/components/CircularText";
 
 export default function Home() {
   return (
-    <main>
-      <Hero />
-      {/* Optional: more sections below */}
+    <main className="h-screen w-screen bg-black flex items-center justify-center">
+      <CircularText
+        text="AIBEL AIBEL AIBEL"
+        spinDuration={15}
+        onHover="goBonkers"
+        className="text-white"
+      />
     </main>
   );
 }
