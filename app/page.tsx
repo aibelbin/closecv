@@ -342,7 +342,8 @@ export default function Portfolio() {
       <motion.nav initial={{ y: -100 }} animate={{ y: 0 }} className="fixed top-0 left-0 right-0 z-40 p-6">
         <div className="flex justify-between items-center">
           <motion.div whileHover={{ scale: 1.05 }} className="text-2xl font-bold">
-            Portfolio
+            Do Good 
+            Be Curious
           </motion.div>
 
           <motion.button
@@ -411,7 +412,7 @@ export default function Portfolio() {
           }}
         >
           <motion.h1 variants={itemVariants} className="text-6xl md:text-8xl font-bold mb-6">
-            {"John Doe".split("").map((char, index) => (
+            {"Aibel Bin Zacariah".split("").map((char, index) => (
               <motion.span
                 key={index}
                 initial={{ opacity: 0, y: 50 }}
@@ -475,16 +476,14 @@ export default function Portfolio() {
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <motion.div initial={{ x: -50, opacity: 0 }} whileInView={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 }}>
             <p className="text-lg text-gray-300 leading-relaxed mb-6">
-              I'm a passionate full-stack developer with 5+ years of experience creating digital experiences that
-              combine beautiful design with powerful functionality.
+              I am a curious kid who likes to break a few rules and live unconventionally. I build, I break, I learn 
             </p>
             <p className="text-lg text-gray-300 leading-relaxed mb-8">
-              I specialize in React, Next.js, and modern web technologies, always staying up-to-date with the latest
-              trends and best practices in web development.
+              I run on open knowledge and learn everything that I find interesting. I am interested in Brain computer interfaces, Robotics, Hardware, 
+              and Cyber and network securities.
             </p>
             <p className="text-lg text-gray-300 leading-relaxed">
-              When I'm not coding, you'll find me exploring new technologies, contributing to open-source projects, or
-              sharing knowledge with the developer community.
+              My expertise spreads over a lot of programming languages, but most importantly, I dont have a stack. I just pick a stack, learn and build.
             </p>
           </motion.div>
 
@@ -1001,7 +1000,7 @@ export default function Portfolio() {
           transition={{ repeat: Number.POSITIVE_INFINITY, duration: 3 }}
           className="text-gray-500"
         >
-          © 2024 John Doe. Crafted with passion and code.
+          © 2024 Aibel hates footers.
         </motion.p>
       </motion.footer>
     </div>
