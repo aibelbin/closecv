@@ -29,6 +29,8 @@ import {
   GraduationCap,
   Mic,
 } from "lucide-react"
+import SplashCursor  from "@/components/SplashCursor"
+
 
 export default function Portfolio() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -93,15 +95,15 @@ export default function Portfolio() {
 
   const hackathonWins = [
     {
-      title: "TechCrunch Disrupt Hackathon",
+      title: "Nasa Space Apps Hackathon",
       position: "1st Place",
       year: "2024",
-      location: "San Francisco, CA",
-      project: "NeuroLink Dashboard",
-      description: "Built a real-time brain-computer interface dashboard for paralyzed patients",
-      prize: "$50,000",
-      participants: "500+",
-      tech: ["React", "Python", "TensorFlow", "WebRTC"],
+      location: "Amal Jyothi College of engineering",
+      project: "Waste reduction and poverty management software",
+      description: "Built a website which lets restaurants donate unsold food at the end of the day to the poor",
+      prize: "₹35,000",
+      participants: "1200+",
+      tech: ["React", "Python", "supabase"],
       color: "from-yellow-400 to-orange-500",
     },
     {
@@ -143,10 +145,10 @@ export default function Portfolio() {
   ]
 
   const hackathonStats = [
-    { icon: Trophy, value: "12+", label: "Hackathons Won" },
-    { icon: Award, value: "4", label: "Current Streak" },
-    { icon: Users, value: "8", label: "Cities Visited" },
-    { icon: Target, value: "2024", label: "Latest Win" },
+    { icon: Trophy, value: "6", label: "Hackathons Won" },
+    { icon: Award, value: "6", label: "Current Streak" },
+    { icon: Users, value: "5", label: "Cities Visited" },
+    { icon: Target, value: "2025", label: "Latest Win" },
   ]
 
   const education = [
@@ -266,84 +268,15 @@ export default function Portfolio() {
   ]
 
   return (
+
     <div className="bg-black text-white min-h-screen overflow-x-hidden">
-      {/* Splash Cursor */}
-      <motion.div
-        className="fixed pointer-events-none z-50"
-        animate={{
-          x: mousePosition.x - 16,
-          y: mousePosition.y - 16,
-        }}
-        transition={{
-          type: "spring",
-          stiffness: 500,
-          damping: 28,
-        }}
-      >
-        {/* Main cursor splash */}
-        <motion.div
-          className="w-8 h-8 rounded-full bg-blue-400 opacity-60"
-          animate={{
-            scale: [1, 1.2, 1],
-          }}
-          transition={{
-            duration: 2,
-            repeat: Number.POSITIVE_INFINITY,
-            ease: "easeInOut",
-          }}
-        />
-
-        {/* Splash droplets */}
-        {[...Array(6)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-2 h-2 rounded-full bg-cyan-300 opacity-40"
-            style={{
-              top: "50%",
-              left: "50%",
-            }}
-            animate={{
-              x: [0, Math.cos((i * 60 * Math.PI) / 180) * 20, 0],
-              y: [0, Math.sin((i * 60 * Math.PI) / 180) * 20, 0],
-              scale: [0, 1, 0],
-              opacity: [0, 0.6, 0],
-            }}
-            transition={{
-              duration: 1.5,
-              repeat: Number.POSITIVE_INFINITY,
-              delay: i * 0.1,
-              ease: "easeOut",
-            }}
-          />
-        ))}
-      </motion.div>
-
-      {/* Click Ripples */}
-      <AnimatePresence>
-        {cursorRipples.map((ripple) => (
-          <motion.div
-            key={ripple.id}
-            className="fixed pointer-events-none z-40"
-            style={{
-              left: ripple.x - 25,
-              top: ripple.y - 25,
-            }}
-            initial={{ scale: 0, opacity: 0.8 }}
-            animate={{ scale: 3, opacity: 0 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 1, ease: "easeOut" }}
-          >
-            <div className="w-12 h-12 border-2 border-blue-400 rounded-full" />
-          </motion.div>
-        ))}
-      </AnimatePresence>
+      {/* <SplashCursor/> */}
 
       {/* Navigation */}
       <motion.nav initial={{ y: -100 }} animate={{ y: 0 }} className="fixed top-0 left-0 right-0 z-40 p-6">
         <div className="flex justify-between items-center">
           <motion.div whileHover={{ scale: 1.05 }} className="text-2xl font-bold">
-            Do Good 
-            Be Curious
+            卢卡
           </motion.div>
 
           <motion.button
@@ -430,19 +363,25 @@ export default function Portfolio() {
           </motion.h1>
 
           <motion.p variants={itemVariants} className="text-xl md:text-2xl text-gray-400 mb-8">
-            Full Stack Developer & BCI Researcher
+           Curious Tinkerer, BCI researcher and an open-source contributer 
           </motion.p>
 
           <motion.div variants={itemVariants} className="flex justify-center space-x-6 mb-12">
-            {[Github, Linkedin, Mail].map((Icon, index) => (
+            {[
+              { Icon: Github, link: "https://www.github.com/aibelbin" },
+              { Icon: Linkedin, link: "https://www.linkedin.com/in/aibel-bin-zacariah-677660226/" },
+              { Icon: Mail, link: "aibelbinzacariah@gmail.com" },
+            ].map(({ Icon, link }, index) => (
               <motion.a
-                key={index}
-                href="#"
-                whileHover={{ scale: 1.2, rotate: 360 }}
-                whileTap={{ scale: 0.9 }}
-                className="p-3 border border-gray-700 rounded-full hover:border-white transition-colors"
+              key={index}
+              href={link}
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ scale: 1.2, rotate: 360 }}
+              whileTap={{ scale: 0.9 }}
+              className="p-3 border border-gray-700 rounded-full hover:border-white transition-colors"
               >
-                <Icon size={24} />
+              <Icon size={24} />
               </motion.a>
             ))}
           </motion.div>
@@ -525,7 +464,7 @@ export default function Portfolio() {
           whileInView={{ y: 0, opacity: 1 }}
           className="text-4xl md:text-6xl font-bold mb-8 text-center"
         >
-          Hackathon Victories
+          Hackathons
         </motion.h2>
 
         <motion.p
@@ -534,7 +473,7 @@ export default function Portfolio() {
           transition={{ delay: 0.2 }}
           className="text-xl text-gray-400 text-center mb-16 max-w-3xl mx-auto"
         >
-          Turning innovative ideas into award-winning solutions under pressure
+          Breakless hours of code, innovation and pitching.
         </motion.p>
 
         {/* Hackathon Stats */}
