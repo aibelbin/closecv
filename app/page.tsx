@@ -19,7 +19,6 @@ import {
   Brain,
   Zap,
   Activity,
-  BookOpen,
   Award,
   Users,
   Trophy,
@@ -87,7 +86,7 @@ export default function Portfolio() {
       y: 0,
       opacity: 1,
       transition: {
-        type: "spring",
+        type: "spring" as const,
         stiffness: 100,
       },
     },
@@ -105,42 +104,46 @@ export default function Portfolio() {
       participants: "1200+",
       tech: ["React", "Python", "supabase"],
       color: "from-yellow-400 to-orange-500",
+      link: "https://github.com/aibelbin/nasa-space-apps-project", // Replace with actual project link
     },
     {
-      title: "MIT Health Hack",
-      position: "1st Place",
-      year: "2023",
-      location: "Cambridge, MA",
-      project: "MindBridge",
-      description: "AI-powered mental health companion using EEG signal analysis",
-      prize: "$25,000",
+      title: "Gen AI International Hackathon",
+      position: "5th Place",
+      year: "2024",
+      location: "Online",
+      project: "NewsRag",
+      description: "AI-powered news generation software",
+      prize: "₹65,000",
       participants: "300+",
-      tech: ["Next.js", "PyTorch", "AWS", "MongoDB"],
+      tech: ["Next.js", "Hugging Faces", "AWS", "SupaBase"],
       color: "from-blue-400 to-purple-500",
+      link: "https://github.com/aibelbin/newsrag", // Replace with actual project link
     },
     {
-      title: "Google Developer Challenge",
+      title: "TinkHack",
       position: "2nd Place",
-      year: "2023",
-      location: "Mountain View, CA",
-      project: "AccessiCode",
-      description: "Voice-controlled coding environment for developers with disabilities",
-      prize: "$15,000",
+      year: "2025",
+      location: "Model Engineering College",
+      project: "LogiScale",
+      description: "Created a map system from scratch with better location provider and heatmaps based on cctv footages",
+      prize: "₹25,000",
       participants: "800+",
-      tech: ["TypeScript", "WebAssembly", "GCP", "Firebase"],
+      tech: ["TypeScript", "Python", "Yolo V8", "SupaBase"],
       color: "from-green-400 to-blue-500",
+      link: "https://github.com/aibelbin/logiscale", // Replace with actual project link
     },
     {
-      title: "Facebook Global Hackathon",
-      position: "3rd Place",
-      year: "2022",
-      location: "Menlo Park, CA",
-      project: "SocialMind",
-      description: "AR social platform with emotion recognition and mood tracking",
-      prize: "$10,000",
-      participants: "1000+",
-      tech: ["React Native", "ARKit", "Node.js", "PostgreSQL"],
+      title: "Useless Projects",
+      position: "Winner",
+      year: "2025",
+      location: "Online",
+      project: "Appam Thinnam Kuzhi Ennam",
+      description: "Created a funny program to read the number of holes in an appam",
+      prize: "₹32,000",
+      participants: "1500+",
+      tech: ["React Native", "Python", "Streamlit", "SupaBase"],
       color: "from-pink-400 to-red-500",
+      link: "https://github.com/aibelbin/appam-hole-counter", // Replace with actual project link
     },
   ]
 
@@ -151,39 +154,42 @@ export default function Portfolio() {
     { icon: Target, value: "2025", label: "Latest Win" },
   ]
 
-  const education = [
+  const talks = [
     {
-      institution: "Stanford University",
-      degree: "Ph.D. in Computer Science",
-      specialization: "Brain-Computer Interfaces",
-      period: "2020 - 2024",
-      location: "Stanford, CA",
-      achievements: ["Summa Cum Laude", "Outstanding Research Award", "Teaching Excellence Award"],
+      title: "Brain Computer Interfacing: The Future of Human-Machine Interaction",
+      type: "Technical Talk",
+      topic: "Brain Computer Interfacing",
+      period: "2024",
+      location: "Online",
+      audience: "Tech Enthusiasts & Researchers",
+      achievements: ["200+ Attendees", "Interactive Q&A", "Technical Deep-dive"],
       color: "from-red-500 to-orange-500",
     },
     {
-      institution: "MIT",
-      degree: "M.S. in Electrical Engineering",
-      specialization: "Neural Engineering",
-      period: "2018 - 2020",
-      location: "Cambridge, MA",
-      achievements: ["Dean's List", "Research Fellowship", "Best Thesis Award"],
+      title: "Internet of Things: Connecting the Digital World",
+      type: "Workshop",
+      topic: "IoT & Hardware",
+      period: "2024",
+      location: "Online",
+      audience: "Developers & Engineers",
+      achievements: ["150+ Participants", "Live Coding Session", "Hardware Demo"],
       color: "from-blue-500 to-purple-500",
     },
     {
-      institution: "UC Berkeley",
-      degree: "B.S. in Computer Science",
-      specialization: "AI & Machine Learning",
-      period: "2014 - 2018",
-      location: "Berkeley, CA",
-      achievements: ["Magna Cum Laude", "Phi Beta Kappa", "CS Honor Society"],
+      title: "Building Startups: From Idea to Execution",
+      type: "Entrepreneurship Class",
+      topic: "Startups & Business",
+      period: "2024",
+      location: "Offline",
+      audience: "Aspiring Entrepreneurs",
+      achievements: ["50+ Students", "Case Studies", "Pitch Sessions"],
       color: "from-yellow-500 to-blue-500",
     },
   ]
 
   const educationStats = [
-    { icon: Mic, value: "25+", label: "Speaking Events" },
-    { icon: Users, value: "50K+", label: "People Reached" },
+    { icon: Mic, value: "3", label: "Speaking Events" },
+    { icon: Users, value: "400+", label: "People Reached" },
   ]
 
   const skills = [
@@ -192,77 +198,39 @@ export default function Portfolio() {
     "TypeScript",
     "Node.js",
     "Python",
-    "AWS",
+    "SupaBase",
     "Docker",
-    "GraphQL",
-    "MongoDB",
-    "PostgreSQL",
-    "Tailwind CSS",
-    "Framer Motion",
+    "Arduino",
+    "IOT",
+    "CyberSecurity",
+    "Brain Computer Interfacing",
+    "Leader",
   ]
 
   const researchAreas = [
     {
-      title: "Neural Signal Processing",
-      description: "Advanced algorithms for processing and interpreting brain signals in real-time",
-      icon: Activity,
-      publications: 8,
-    },
-    {
-      title: "Machine Learning for BCI",
-      description: "Deep learning models for decoding neural patterns and motor intentions",
+      title: "Non-Invasive Brain Computer Interfacing",
+      description: "Developing advanced non-invasive techniques for brain-computer interaction using EEG and other external sensors",
       icon: Brain,
-      publications: 12,
     },
     {
-      title: "Real-time Control Systems",
-      description: "Low-latency systems for translating neural signals into device control",
-      icon: Zap,
-      publications: 6,
-    },
-  ]
-
-  const publications = [
-    {
-      title: "Real-time Motor Imagery Classification using Deep Neural Networks",
-      journal: "IEEE Transactions on Neural Systems",
-      year: "2024",
-      citations: 45,
-      type: "Journal Article",
-    },
-    {
-      title: "Adaptive Signal Processing for Non-invasive Brain-Computer Interfaces",
-      journal: "Nature Neuroscience Methods",
-      year: "2023",
-      citations: 78,
-      type: "Journal Article",
-    },
-    {
-      title: "Multi-modal BCI System for Paralyzed Patients: A Clinical Study",
-      journal: "Journal of Neural Engineering",
-      year: "2023",
-      citations: 92,
-      type: "Clinical Study",
+      title: "Cybersecurity for Elderly",
+      description: "Protecting elderly populations from social engineering attacks through awareness and technological solutions",
+      icon: Users,
     },
   ]
 
   const projects = [
     {
-      title: "E-Commerce Platform",
-      description: "Full-stack e-commerce solution with real-time inventory management",
-      tech: ["Next.js", "Stripe", "PostgreSQL", "Redis"],
+      title: "WatchApp",
+      description: "A watch app for me to budget",
+      tech: ["Kotlin", "Jetpack Compose", "ADB", "WearOs"],
       link: "#",
     },
     {
-      title: "AI Chat Application",
-      description: "Real-time chat app with AI-powered responses and sentiment analysis",
+      title: "Hospital Management",
+      description: "An Hospital Management tool along with a patient client side specifically tailored for elderly",
       tech: ["React", "Socket.io", "OpenAI", "Node.js"],
-      link: "#",
-    },
-    {
-      title: "Data Visualization Dashboard",
-      description: "Interactive dashboard for complex data analysis and reporting",
-      tech: ["D3.js", "Python", "FastAPI", "PostgreSQL"],
       link: "#",
     },
   ]
@@ -289,12 +257,12 @@ export default function Portfolio() {
           </motion.button>
 
           <div className="hidden md:flex space-x-4">
-            {["About", "Hackathons", "Education", "Research", "Projects", "Skills", "Contact"].map((item) => (
+            {["About", "Hackathons", "Talks", "Research", "Projects", "Skills", "Contact"].map((item) => (
               <motion.a
                 key={item}
                 href={`#${item.toLowerCase()}`}
                 whileHover={{ scale: 1.1 }}
-                className="hover:text-gray-300 transition-colors text-sm"
+                className="hover:text-grey-300 transition-colors text-sm"
               >
                 {item}
               </motion.a>
@@ -310,7 +278,7 @@ export default function Portfolio() {
               exit={{ opacity: 0, height: 0 }}
               className="md:hidden mt-4 space-y-4"
             >
-              {["About", "Hackathons", "Education", "Research", "Projects", "Skills", "Contact"].map((item) => (
+              {["About", "Hackathons", "Talks", "Research", "Projects", "Skills", "Contact"].map((item) => (
                 <motion.a
                   key={item}
                   href={`#${item.toLowerCase()}`}
@@ -419,7 +387,7 @@ export default function Portfolio() {
             </p>
             <p className="text-lg text-gray-300 leading-relaxed mb-8">
               I run on open knowledge and learn everything that I find interesting. I am interested in Brain computer interfaces, Robotics, Hardware, 
-              and Cyber and network securities.
+              and Cyber and network securities. I have wins over various hackathons and ctfs
             </p>
             <p className="text-lg text-gray-300 leading-relaxed">
               My expertise spreads over a lot of programming languages, but most importantly, I dont have a stack. I just pick a stack, learn and build.
@@ -433,8 +401,8 @@ export default function Portfolio() {
             className="grid grid-cols-2 gap-6"
           >
             {[
-              { icon: Code, label: "Clean Code", desc: "Writing maintainable, scalable solutions" },
-              { icon: Palette, label: "UI/UX Design", desc: "Creating beautiful user experiences" },
+              { icon: Code, label: "Hackathons", desc: "Finding Problems, creating solutions" },
+              { icon: Palette, label: "B", desc: "Creating beautiful user experiences" },
               { icon: Smartphone, label: "Responsive", desc: "Mobile-first approach to development" },
               { icon: ExternalLink, label: "Performance", desc: "Optimized for speed and efficiency" },
             ].map((item, index) => (
@@ -527,13 +495,13 @@ export default function Portfolio() {
                         </Badge>
                       </div>
 
-                      <h3 className="text-2xl font-bold mb-2">{hackathon.title}</h3>
-                      <h4 className="text-xl text-yellow-400 mb-3">{hackathon.project}</h4>
+                      <h3 className={`text-2xl font-bold mb-2 bg-gradient-to-r ${hackathon.color} bg-clip-text text-transparent`}>{hackathon.title}</h3>
+                      <h4 className={`text-xl mb-3 bg-gradient-to-r ${hackathon.color} bg-clip-text text-transparent font-semibold`}>{hackathon.project}</h4>
                       <p className="text-gray-300 mb-4">{hackathon.description}</p>
 
                       <div className="flex flex-wrap gap-2 mb-4">
                         {hackathon.tech.map((tech) => (
-                          <Badge key={tech} variant="outline" className="text-xs">
+                          <Badge key={tech} variant="outline" className={`text-xs bg-gradient-to-r ${hackathon.color} bg-clip-text text-transparent border-gray-600`}>
                             {tech}
                           </Badge>
                         ))}
@@ -560,10 +528,12 @@ export default function Portfolio() {
                   </div>
 
                   <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="flex justify-end">
-                    <Button variant="outline" className="bg-transparent hover:bg-white hover:text-black">
-                      <ExternalLink size={16} className="mr-2" />
-                      View Project
-                    </Button>
+                    <a href={hackathon.link} target="_blank" rel="noopener noreferrer">
+                      <Button variant="outline" className={`bg-transparent text-white border-gray-600 hover:bg-gradient-to-r hover:${hackathon.color} hover:text-black hover:border-transparent transition-all duration-300`}>
+                        <ExternalLink size={16} className="mr-2" />
+                        View Project
+                      </Button>
+                    </a>
                   </motion.div>
                 </div>
               </Card>
@@ -572,9 +542,9 @@ export default function Portfolio() {
         </div>
       </motion.section>
 
-      {/* Education & Speaking Section */}
+      {/* Talks & Speaking Section */}
       <motion.section
-        id="education"
+        id="talks"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         className="py-20 px-6 max-w-6xl mx-auto"
@@ -584,7 +554,7 @@ export default function Portfolio() {
           whileInView={{ y: 0, opacity: 1 }}
           className="text-4xl md:text-6xl font-bold mb-8 text-center"
         >
-          Education
+          Talks
         </motion.h2>
 
         <motion.p
@@ -593,7 +563,7 @@ export default function Portfolio() {
           transition={{ delay: 0.2 }}
           className="text-xl text-gray-400 text-center mb-16 max-w-3xl mx-auto"
         >
-          Academic excellence and knowledge sharing through education
+          Give and take knowledge
         </motion.p>
 
         {/* Education & Speaking Stats */}
@@ -618,13 +588,13 @@ export default function Portfolio() {
           ))}
         </motion.div>
 
-        {/* Education Timeline */}
+        {/* Talks Timeline */}
         <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.4 }} className="mb-16">
-          <h3 className="text-3xl font-bold mb-8 text-center">Academic Journey</h3>
+          <h3 className="text-3xl font-bold mb-8 text-center">Speaking Engagements</h3>
           <div className="space-y-8">
-            {education.map((edu, index) => (
+            {talks.map((talk, index) => (
               <motion.div
-                key={edu.institution}
+                key={talk.title}
                 initial={{ x: index % 2 === 0 ? -100 : 100, opacity: 0 }}
                 whileInView={{ x: 0, opacity: 1 }}
                 transition={{ delay: index * 0.2 }}
@@ -634,7 +604,7 @@ export default function Portfolio() {
                 <Card className="bg-gray-900 border-gray-800 p-8 hover:border-green-500 transition-all duration-300 overflow-hidden">
                   {/* Gradient Background */}
                   <div
-                    className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${edu.color} opacity-10 rounded-full blur-2xl`}
+                    className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${talk.color} opacity-10 rounded-full blur-2xl`}
                   />
 
                   <div className="relative z-10">
@@ -642,19 +612,20 @@ export default function Portfolio() {
                       <div className="flex-1">
                         <div className="flex items-center space-x-3 mb-3">
                           <motion.div whileHover={{ rotate: 360, scale: 1.2 }} transition={{ duration: 0.6 }}>
-                            <GraduationCap size={28} className="text-green-400" />
+                            <Mic size={28} className="text-green-400" />
                           </motion.div>
-                          <Badge className={`bg-gradient-to-r ${edu.color} text-black font-bold px-3 py-1`}>
-                            {edu.degree}
+                          <Badge className={`bg-gradient-to-r ${talk.color} text-black font-bold px-3 py-1`}>
+                            {talk.type}
                           </Badge>
                         </div>
 
-                        <h3 className="text-2xl font-bold mb-2">{edu.institution}</h3>
-                        <h4 className="text-xl text-green-400 mb-3">{edu.specialization}</h4>
+                        <h3 className={`text-2xl font-bold mb-2 bg-gradient-to-r ${talk.color} bg-clip-text text-transparent`}>{talk.title}</h3>
+                        <h4 className={`text-xl text-green-400 mb-3 bg-gradient-to-r ${talk.color} bg-clip-text text-transparent font-semibold`}>{talk.topic}</h4>
+                        <p className="text-gray-300 mb-4">Audience: {talk.audience}</p>
 
                         <div className="flex flex-wrap gap-2 mb-4">
-                          {edu.achievements.map((achievement) => (
-                            <Badge key={achievement} variant="outline" className="text-xs">
+                          {talk.achievements.map((achievement) => (
+                            <Badge key={achievement} variant="outline" className={`text-xs bg-gradient-to-r ${talk.color} bg-clip-text text-transparent border-gray-600`}>
                               {achievement}
                             </Badge>
                           ))}
@@ -665,11 +636,11 @@ export default function Portfolio() {
                         <div className="text-right space-y-2">
                           <div className="flex items-center justify-end space-x-2 text-sm text-gray-400">
                             <Calendar size={16} />
-                            <span>{edu.period}</span>
+                            <span>{talk.period}</span>
                           </div>
                           <div className="flex items-center justify-end space-x-2 text-sm text-gray-400">
                             <MapPin size={16} />
-                            <span>{edu.location}</span>
+                            <span>{talk.location}</span>
                           </div>
                         </div>
                       </div>
@@ -703,11 +674,11 @@ export default function Portfolio() {
           transition={{ delay: 0.2 }}
           className="text-xl text-gray-400 text-center mb-16 max-w-3xl mx-auto"
         >
-          Pioneering the future of human-computer interaction through brain-computer interfacing research
+          Exploring the intersection of neurotechnology and cybersecurity through innovative research
         </motion.p>
 
         {/* Research Areas */}
-        <div className="grid md:grid-cols-3 gap-8 mb-16">
+        <div className="grid md:grid-cols-2 gap-8 mb-16 max-w-4xl mx-auto">
           {researchAreas.map((area, index) => (
             <motion.div
               key={area.title}
@@ -720,12 +691,8 @@ export default function Portfolio() {
                 <motion.div whileHover={{ rotate: 360 }} transition={{ duration: 0.6 }} className="mb-4">
                   <area.icon size={48} className="text-purple-400 mx-auto" />
                 </motion.div>
-                <h3 className="text-xl font-bold mb-3 text-center">{area.title}</h3>
-                <p className="text-gray-400 mb-4 text-center">{area.description}</p>
-                <div className="flex items-center justify-center space-x-2">
-                  <BookOpen size={16} className="text-purple-400" />
-                  <span className="text-sm text-purple-400">{area.publications} Publications</span>
-                </div>
+                <h3 className="text-xl font-bold mb-3 text-center bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">{area.title}</h3>
+                <p className="text-gray-200 mb-4 text-center">{area.description}</p>
               </Card>
             </motion.div>
           ))}
@@ -739,10 +706,8 @@ export default function Portfolio() {
           className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16"
         >
           {[
-            { icon: BookOpen, value: "26+", label: "Publications" },
-            { icon: Award, value: "215+", label: "Citations" },
-            { icon: Users, value: "5+", label: "Collaborations" },
-            { icon: Brain, value: "3", label: "Patents" },
+            { icon: Users, value: "2", label: "Active Projects" },
+            { icon: Brain, value: "1", label: "Patent Pending" },
           ].map((stat, index) => (
             <motion.div
               key={stat.label}
@@ -754,45 +719,6 @@ export default function Portfolio() {
               <div className="text-gray-400 text-sm">{stat.label}</div>
             </motion.div>
           ))}
-        </motion.div>
-
-        {/* Recent Publications */}
-        <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.6 }}>
-          <h3 className="text-2xl font-bold mb-8 text-center">Recent Publications</h3>
-          <div className="space-y-6">
-            {publications.map((pub, index) => (
-              <motion.div
-                key={pub.title}
-                initial={{ x: -50, opacity: 0 }}
-                whileInView={{ x: 0, opacity: 1 }}
-                transition={{ delay: index * 0.1 }}
-                whileHover={{ x: 10 }}
-                className="border border-gray-800 rounded-lg p-6 hover:border-purple-500 transition-colors"
-              >
-                <div className="flex flex-col md:flex-row md:items-center justify-between">
-                  <div className="flex-1">
-                    <h4 className="text-lg font-semibold mb-2">{pub.title}</h4>
-                    <p className="text-purple-400 mb-2">{pub.journal}</p>
-                    <div className="flex items-center space-x-4 text-sm text-gray-400">
-                      <span>{pub.year}</span>
-                      <span>•</span>
-                      <span>{pub.citations} citations</span>
-                      <span>•</span>
-                      <Badge variant="outline" className="text-xs">
-                        {pub.type}
-                      </Badge>
-                    </div>
-                  </div>
-                  <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
-                    <Button variant="outline" size="sm" className="mt-4 md:mt-0 bg-transparent">
-                      <ExternalLink size={14} className="mr-2" />
-                      View
-                    </Button>
-                  </motion.div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
         </motion.div>
       </motion.section>
 
@@ -821,10 +747,10 @@ export default function Portfolio() {
               whileHover={{ y: -10 }}
             >
               <Card className="bg-gray-900 border-gray-800 p-6 h-full hover:border-gray-600 transition-colors">
-                <motion.h3 whileHover={{ scale: 1.05 }} className="text-xl font-bold mb-3">
+                <motion.h3 whileHover={{ scale: 1.05 }} className="text-xl font-bold mb-3 text-white">
                   {project.title}
                 </motion.h3>
-                <p className="text-gray-400 mb-4">{project.description}</p>
+                <p className="text-white mb-4">{project.description}</p>
 
                 <div className="flex flex-wrap gap-2 mb-4">
                   {project.tech.map((tech) => (
@@ -835,13 +761,15 @@ export default function Portfolio() {
                 </div>
 
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Button
-                    variant="outline"
-                    className="w-full bg-transparent hover:bg-white hover:text-black transition-colors"
-                  >
-                    <ExternalLink size={16} className="mr-2" />
-                    View Project
-                  </Button>
+                  <a href={project.link} target="_blank" rel="noopener noreferrer">
+                    <Button
+                      variant="outline"
+                      className="w-full bg-transparent text-white border-gray-600 hover:bg-white hover:text-black transition-colors"
+                    >
+                      <ExternalLink size={16} className="mr-2" />
+                      View Project
+                    </Button>
+                  </a>
                 </motion.div>
               </Card>
             </motion.div>
