@@ -14,6 +14,8 @@ import {
   Palette,
   Smartphone,
   ArrowDown,
+  Microscope,
+  Laptop,
   Menu,
   X,
   Brain,
@@ -402,9 +404,9 @@ export default function Portfolio() {
           >
             {[
               { icon: Code, label: "Hackathons", desc: "Finding Problems, creating solutions" },
-              { icon: Palette, label: "B", desc: "Creating beautiful user experiences" },
-              { icon: Smartphone, label: "Responsive", desc: "Mobile-first approach to development" },
-              { icon: ExternalLink, label: "Performance", desc: "Optimized for speed and efficiency" },
+              { icon: Brain, label: "Brain Research", desc: "Upading and working closely with BCI tech" },
+              { icon: Microscope, label: "Experimenting", desc: "Learning and developing new programs" },
+              { icon: Laptop, label: "Hardware", desc: "Proficinent in various langauges" },
             ].map((item, index) => (
               <motion.div
                 key={index}
