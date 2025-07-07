@@ -240,13 +240,13 @@ export default function Portfolio() {
   return (
 
     <div className="bg-black text-white min-h-screen overflow-x-hidden">
-      <SplashCursor/>
+      {/* <SplashCursor/> */}
 
       {/* Navigation */}
       <motion.nav initial={{ y: -100 }} animate={{ y: 0 }} className="fixed top-0 left-0 right-0 z-40 p-6">
         <div className="flex justify-between items-center">
           <motion.div whileHover={{ scale: 1.05 }} className="text-2xl font-bold">
-            卢卡
+            卡罗琳妮
           </motion.div>
 
           <motion.button
@@ -869,7 +869,7 @@ export default function Portfolio() {
           transition={{ repeat: Number.POSITIVE_INFINITY, duration: 3 }}
           className="text-gray-500"
         >
-          © 2024 Aibel hates footers.
+          © 2025 Aibel hates footers.
         </motion.p>
       </motion.footer>
     </div>
