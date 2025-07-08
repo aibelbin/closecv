@@ -53,33 +53,20 @@ function pointerPrototype(): Pointer {
 }
 
 export default function SplashCursor({
-  SIM_RESOLUTION = 128,
-
-  DYE_RESOLUTION = 1440,
-
-  CAPTURE_RESOLUTION = 512,
-
-  DENSITY_DISSIPATION = 3.5,
-
-  VELOCITY_DISSIPATION = 2,
-
-  PRESSURE = 0.1,
-
-  PRESSURE_ITERATIONS = 20,
-
-  CURL = 3,
-
-  SPLAT_RADIUS = 0.2,
-
-  SPLAT_FORCE = 6000,
-
-  SHADING = true,
-
-  COLOR_UPDATE_SPEED = 10,
-
-  BACK_COLOR = { r: 0.5, g: 0, b: 0 },
-
-  TRANSPARENT = true
+  SIM_RESOLUTION = 64,           // Reduced for better performance
+  DYE_RESOLUTION = 512,          // Much lower but still good quality
+  CAPTURE_RESOLUTION = 256,      // Reduced capture resolution
+  DENSITY_DISSIPATION = 0.3,     // Slightly faster dissipation
+  VELOCITY_DISSIPATION = 0.3,    // Slightly faster velocity decay
+  PRESSURE = 0.08,               // Reduced pressure for less computation
+  PRESSURE_ITERATIONS = 6,      // Reduced iterations
+  CURL = 1.5,                    // Slightly reduced curl
+  SPLAT_RADIUS = 0.11,           // Slightly smaller radius
+  SPLAT_FORCE = 4500,            // Reduced force
+  SHADING = true,               // Keep disabled
+  COLOR_UPDATE_SPEED = 12,       // Slightly faster updates
+  BACK_COLOR = { r: 0, g: 0, b: 0 }, // Pure black background
+  TRANSPARENT = true             // Keep transparency
 }: SplashCursorProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
