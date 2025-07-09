@@ -53,46 +53,86 @@ function pointerPrototype(): Pointer {
 }
 
 export default function SplashCursor({
-  SIM_RESOLUTION = 64,           // Reduced for better performance
-  DYE_RESOLUTION = 512,          // Much lower but still good quality
-  CAPTURE_RESOLUTION = 256,      // Reduced capture resolution
-  DENSITY_DISSIPATION = 0.3,     // Slightly faster dissipation
-  VELOCITY_DISSIPATION = 0.3,    // Slightly faster velocity decay
-  PRESSURE = 0.08,               // Reduced pressure for less computation
-  PRESSURE_ITERATIONS = 6,      // Reduced iterations
-  CURL = 1.5,                    // Slightly reduced curl
-  SPLAT_RADIUS = 0.11,           // Slightly smaller radius
-  SPLAT_FORCE = 4500,            // Reduced force
-  SHADING = true,               // Keep disabled
-  COLOR_UPDATE_SPEED = 12,       // Slightly faster updates
-  BACK_COLOR = { r: 0, g: 0, b: 0 }, // Pure black background
-  TRANSPARENT = true             // Keep transparency
+  SIM_RESOLUTION = 128,
+  DYE_RESOLUTION = 1440,
+  CAPTURE_RESOLUTION = 512,
+  DENSITY_DISSIPATION = 3.5,
+  VELOCITY_DISSIPATION = 2,
+  PRESSURE = 0.1,
+  PRESSURE_ITERATIONS = 20,
+  CURL = 3,
+  SPLAT_RADIUS = 0.2,
+  SPLAT_FORCE = 6000,
+  SHADING = true,
+  COLOR_UPDATE_SPEED = 10,
+  BACK_COLOR = { r: 0.5, g: 0, b: 0 },
+  TRANSPARENT = true
 }: SplashCursorProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const configRef = useRef({
+    SIM_RESOLUTION,
+    DYE_RESOLUTION,
+    CAPTURE_RESOLUTION,
+    DENSITY_DISSIPATION,
+    VELOCITY_DISSIPATION,
+    PRESSURE,
+    PRESSURE_ITERATIONS,
+    CURL,
+    SPLAT_RADIUS,
+    SPLAT_FORCE,
+    SHADING,
+    COLOR_UPDATE_SPEED,
+    PAUSED: false,
+    BACK_COLOR,
+    TRANSPARENT,
+  });
+
+  // Update config when props change without recreating WebGL context
+  useEffect(() => {
+    configRef.current = {
+      SIM_RESOLUTION,
+      DYE_RESOLUTION,
+      CAPTURE_RESOLUTION,
+      DENSITY_DISSIPATION,
+      VELOCITY_DISSIPATION,
+      PRESSURE,
+      PRESSURE_ITERATIONS,
+      CURL,
+      SPLAT_RADIUS,
+      SPLAT_FORCE,
+      SHADING,
+      COLOR_UPDATE_SPEED,
+      PAUSED: false,
+      BACK_COLOR,
+      TRANSPARENT,
+    };
+  }, [
+    SIM_RESOLUTION,
+    DYE_RESOLUTION,
+    CAPTURE_RESOLUTION,
+    DENSITY_DISSIPATION,
+    VELOCITY_DISSIPATION,
+    PRESSURE,
+    PRESSURE_ITERATIONS,
+    CURL,
+    SPLAT_RADIUS,
+    SPLAT_FORCE,
+    SHADING,
+    COLOR_UPDATE_SPEED,
+    BACK_COLOR,
+    TRANSPARENT,
+  ]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
+    let animationId: number;
+    let isDestroyed = false;
     let pointers: Pointer[] = [pointerPrototype()];
 
-    let config = {
-      SIM_RESOLUTION: SIM_RESOLUTION!,
-      DYE_RESOLUTION: DYE_RESOLUTION!,
-      CAPTURE_RESOLUTION: CAPTURE_RESOLUTION!,
-      DENSITY_DISSIPATION: DENSITY_DISSIPATION!,
-      VELOCITY_DISSIPATION: VELOCITY_DISSIPATION!,
-      PRESSURE: PRESSURE!,
-      PRESSURE_ITERATIONS: PRESSURE_ITERATIONS!,
-      CURL: CURL!,
-      SPLAT_RADIUS: SPLAT_RADIUS!,
-      SPLAT_FORCE: SPLAT_FORCE!,
-      SHADING,
-      COLOR_UPDATE_SPEED: COLOR_UPDATE_SPEED!,
-      PAUSED: false,
-      BACK_COLOR,
-      TRANSPARENT,
-    };
+    // Use configRef.current instead of local config
+    const config = configRef.current;
 
     const { gl, ext } = getWebGLContext(canvas);
     if (!gl || !ext) return;
@@ -989,15 +1029,29 @@ export default function SplashCursor({
 
     let lastUpdateTime = Date.now();
     let colorUpdateTimer = 0.0;
+    let frameCount = 0;
+    let lastFpsTime = Date.now();
 
     function updateFrame() {
+      if (isDestroyed) return;
+      
       const dt = calcDeltaTime();
+      
+      // FPS monitoring (optional - remove in production if needed)
+      frameCount++;
+      const now = Date.now();
+      if (now - lastFpsTime > 1000) {
+        // console.log(`FPS: ${frameCount}`);
+        frameCount = 0;
+        lastFpsTime = now;
+      }
+      
       if (resizeCanvas()) initFramebuffers();
       updateColors(dt);
       applyInputs();
       step(dt);
       render(null);
-      requestAnimationFrame(updateFrame);
+      animationId = requestAnimationFrame(updateFrame);
     }
 
     function calcDeltaTime() {
@@ -1014,6 +1068,7 @@ export default function SplashCursor({
       if (canvas!.width !== width || canvas!.height !== height) {
         canvas!.width = width;
         canvas!.height = height;
+        gl.viewport(0, 0, width, height);
         return true;
       }
       return false;
@@ -1430,13 +1485,20 @@ export default function SplashCursor({
       const posX = scaleByPixelRatio(e.clientX);
       const posY = scaleByPixelRatio(e.clientY);
       const color = generateColor();
-      updateFrame();
       updatePointerMoveData(pointer, posX, posY, color);
       document.body.removeEventListener("mousemove", handleFirstMouseMove);
     }
     document.body.addEventListener("mousemove", handleFirstMouseMove);
 
+    // Throttle mouse movements for better performance
+    let lastMouseUpdate = 0;
+    const MOUSE_THROTTLE_MS = 16; // ~60fps
+
     window.addEventListener("mousemove", (e) => {
+      const now = Date.now();
+      if (now - lastMouseUpdate < MOUSE_THROTTLE_MS) return;
+      lastMouseUpdate = now;
+      
       const pointer = pointers[0];
       const posX = scaleByPixelRatio(e.clientX);
       const posY = scaleByPixelRatio(e.clientY);
@@ -1450,7 +1512,6 @@ export default function SplashCursor({
       for (let i = 0; i < touches.length; i++) {
         const posX = scaleByPixelRatio(touches[i].clientX);
         const posY = scaleByPixelRatio(touches[i].clientY);
-        updateFrame();
         updatePointerDownData(pointer, touches[i].identifier, posX, posY);
       }
       document.body.removeEventListener("touchstart", handleFirstTouchStart);
@@ -1468,7 +1529,7 @@ export default function SplashCursor({
           updatePointerDownData(pointer, touches[i].identifier, posX, posY);
         }
       },
-      false
+      { passive: true }
     );
 
     window.addEventListener(
@@ -1482,7 +1543,7 @@ export default function SplashCursor({
           updatePointerMoveData(pointer, posX, posY, pointer.color);
         }
       },
-      false
+      { passive: true }
     );
 
     window.addEventListener("touchend", (e) => {
@@ -1492,26 +1553,42 @@ export default function SplashCursor({
         updatePointerUpData(pointer);
       }
     });
-  }, [
-    SIM_RESOLUTION,
-    DYE_RESOLUTION,
-    CAPTURE_RESOLUTION,
-    DENSITY_DISSIPATION,
-    VELOCITY_DISSIPATION,
-    PRESSURE,
-    PRESSURE_ITERATIONS,
-    CURL,
-    SPLAT_RADIUS,
-    SPLAT_FORCE,
-    SHADING,
-    COLOR_UPDATE_SPEED,
-    BACK_COLOR,
-    TRANSPARENT,
-  ]);
+
+    // Start the animation loop
+    animationId = requestAnimationFrame(updateFrame);
+
+    // Cleanup function
+    return () => {
+      isDestroyed = true;
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+      }
+    };
+  }, []);
 
   return (
-    <div className="fixed top-0 left-0 z-50 pointer-events-none w-full h-full">
-      <canvas ref={canvasRef} id="fluid" className="w-screen h-screen block"></canvas>
+    <div
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        zIndex: 50,
+        pointerEvents: "none",
+        width: "100%",
+        height: "100%",
+      }}
+    >
+      <canvas
+        ref={canvasRef}
+        id="fluid"
+        style={{
+          width: "100vw",
+          height: "100vh",
+          display: "block",
+          willChange: "transform",
+          transform: "translateZ(0)", // Force hardware acceleration
+        }}
+      />
     </div>
   );
 }

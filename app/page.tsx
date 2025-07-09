@@ -239,9 +239,10 @@ export default function Portfolio() {
 
   return (
 
+    
     <div className="bg-black text-white min-h-screen overflow-x-hidden">
+      
       <SplashCursor/>
-
       {/* Navigation */}
       <motion.nav initial={{ y: -100 }} animate={{ y: 0 }} className="fixed top-0 left-0 right-0 z-40 p-6">
         <div className="flex justify-between items-center">
