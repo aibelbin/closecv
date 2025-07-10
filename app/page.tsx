@@ -106,7 +106,7 @@ export default function Portfolio() {
       participants: "1200+",
       tech: ["React", "Python", "supabase"],
       color: "from-yellow-400 to-orange-500",
-      link: "https://github.com/aibelbin/nasa-space-apps-project", // Replace with actual project link
+      link: "https://github.com/aibelbin/nasa-space-apps-project", 
     },
     {
       title: "Gen AI International Hackathon",
