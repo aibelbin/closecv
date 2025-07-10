@@ -37,6 +37,26 @@ CREATE TABLE IF NOT EXISTS skills (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL
 );
 
+
+--table for hackathon wins--
+CREATE TABLE hackathonwins (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    position VARCHAR(50) NOT NULL,
+    year INTEGER NOT NULL,
+    location VARCHAR(255) NOT NULL,
+    project VARCHAR(255) NOT NULL,
+    description TEXT,
+    prize VARCHAR(100),
+    participants VARCHAR(50), -- Using VARCHAR to handle "800+" format
+    tech JSON, -- Storing array of technologies as JSON
+    color VARCHAR(100), -- For gradient classes like "from-green-400 to-blue-500"
+    link VARCHAR(500),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
 -- Enable Row Level Security
 ALTER TABLE achievements ENABLE ROW LEVEL SECURITY;
 ALTER TABLE projects ENABLE ROW LEVEL SECURITY;
