@@ -6,7 +6,7 @@ import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 import { Button } from "@/components/ui/button"
-import { LayoutDashboard, Trophy, FolderOpen, Settings, LogOut } from "lucide-react"
+import { LayoutDashboard, Trophy, FolderOpen, Settings, LogOut, Mic, Code, Brain } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
@@ -14,8 +14,10 @@ import { cn } from "@/lib/utils"
 const navigation = [
   { name: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
   { name: "Achievements", href: "/admin/achievements", icon: Trophy },
+  { name: "Talks", href: "/admin/talks", icon: Mic },
   { name: "Projects", href: "/admin/projects", icon: FolderOpen },
-  { name: "Skills", href: "/admin/skills", icon: Settings },
+  { name: "Research", href: "/admin/research", icon: Brain },
+  { name: "Skills", href: "/admin/skills", icon: Code },
 ]
 
 export default function AdminLayout({

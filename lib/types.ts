@@ -22,7 +22,7 @@ export interface Achievement {
 export interface Talk {
   id: string
   title: string
-  type: string // 'Technical Talk', 'Workshop', etc.
+  type: string // talk ano or workshop ano etc etc
   topic?: string
   period?: string
   location?: string
@@ -63,8 +63,18 @@ export interface Project {
 export interface Skill {
   id: string
   name: string
-  category: "frontend" | "backend" | "tools" | "other"
-  proficiency: number
+  category: string
+  proficiency?: number
   icon_name?: string
   created_at: string
+}
+
+export interface Research {
+  id: string
+  title: string
+  description: string
+  icon_name?: string
+  featured: boolean
+  created_at: string
+  updated_at: string
 }

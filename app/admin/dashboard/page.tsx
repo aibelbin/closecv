@@ -3,14 +3,16 @@
 import { useEffect, useState } from "react"
 import { createClient } from "@/lib/supabase/client"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Trophy, FolderOpen, Settings, TrendingUp } from "lucide-react"
+import { Trophy, FolderOpen, Code, TrendingUp, Mic, Brain } from "lucide-react"
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState({
     achievements: 0,
+    talks: 0,
     projects: 0,
+    research: 0,
     skills: 0,
-    recentAchievements: [],
+    recentAchievements: [] as any[],
   })
   const [loading, setLoading] = useState(true)
   const supabase = createClient()
@@ -18,16 +20,20 @@ export default function AdminDashboard() {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const [achievementsRes, projectsRes, skillsRes, recentRes] = await Promise.all([
+        const [achievementsRes, talksRes, projectsRes, researchRes, skillsRes, recentRes] = await Promise.all([
           supabase.from("achievements").select("*", { count: "exact", head: true }),
+          supabase.from("talks").select("*", { count: "exact", head: true }),
           supabase.from("projects").select("*", { count: "exact", head: true }),
+          supabase.from("research").select("*", { count: "exact", head: true }),
           supabase.from("skills").select("*", { count: "exact", head: true }),
           supabase.from("achievements").select("*").order("created_at", { ascending: false }).limit(5),
         ])
 
         setStats({
           achievements: achievementsRes.count || 0,
+          talks: talksRes.count || 0,
           projects: projectsRes.count || 0,
+          research: researchRes.count || 0,
           skills: skillsRes.count || 0,
           recentAchievements: recentRes.data || [],
         })
@@ -53,7 +59,7 @@ export default function AdminDashboard() {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-5">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Achievements</CardTitle>
@@ -61,6 +67,16 @@ export default function AdminDashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats.achievements}</div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Talks</CardTitle>
+            <Mic className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stats.talks}</div>
           </CardContent>
         </Card>
 
@@ -76,21 +92,21 @@ export default function AdminDashboard() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Skills</CardTitle>
-            <Settings className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium">Research Areas</CardTitle>
+            <Brain className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats.skills}</div>
+            <div className="text-2xl font-bold">{stats.research}</div>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Growth</CardTitle>
-            <TrendingUp className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium">Total Skills</CardTitle>
+            <Code className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">+12%</div>
+            <div className="text-2xl font-bold">{stats.skills}</div>
           </CardContent>
         </Card>
       </div>
@@ -112,7 +128,7 @@ export default function AdminDashboard() {
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium text-gray-900 dark:text-white truncate">{achievement.title}</p>
                     <p className="text-sm text-gray-500 dark:text-gray-400">
-                      {new Date(achievement.date).toLocaleDateString()}
+                      {achievement.date ? new Date(achievement.date).toLocaleDateString() : 'No date'}
                     </p>
                   </div>
                 </div>

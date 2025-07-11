@@ -101,26 +101,28 @@ export default function Portfolio() {
     },
   }
 
-  // Fetch hackathon wins from database
+  // Fetch data from database
   useEffect(() => {
-    const fetchHackathonWins = async () => {
+    const fetchData = async () => {
       try {
-        const { data, error } = await supabase
+        // Fetch hackathon wins
+        const { data: hackathonData, error: hackathonError } = await supabase
           .from("achievements")
           .select("*")
           .eq("category", "hackathon")
           .order("year", { ascending: false })
 
-        if (error) throw error
-        setHackathonWins(data || [])
+        if (hackathonError) throw hackathonError
+        setHackathonWins(hackathonData || [])
+
       } catch (error) {
-        console.error("Error fetching hackathon wins:", error)
+        console.error("Error fetching data:", error)
       } finally {
         setLoading(false)
       }
     }
 
-    fetchHackathonWins()
+    fetchData()
   }, [supabase])
 
   const hackathonStats = [
@@ -130,48 +132,76 @@ export default function Portfolio() {
     { icon: Target, value: "2025", label: "Latest Win" },
   ]
 
-  const talks = [
-    {
-      title: "Brain Computer Interfacing: The Future of Human-Machine Interaction",
-      type: "Technical Talk",
-      topic: "Brain Computer Interfacing",
-      period: "2024",
-      location: "Online",
-      audience: "Tech Enthusiasts & Researchers",
-      achievements: ["200+ Attendees", "Interactive Q&A", "Technical Deep-dive"],
-      color: "from-red-500 to-orange-500",
-    },
-    {
-      title: "Internet of Things: Connecting the Digital World",
-      type: "Workshop",
-      topic: "IoT & Hardware",
-      period: "2024",
-      location: "Online",
-      audience: "Developers & Engineers",
-      achievements: ["150+ Participants", "Live Coding Session", "Hardware Demo"],
-      color: "from-blue-500 to-purple-500",
-    },
-    {
-      title: "Building Startups: From Idea to Execution",
-      type: "Entrepreneurship Class",
-      topic: "Startups & Business",
-      period: "2024",
-      location: "Offline",
-      audience: "Aspiring Entrepreneurs",
-      achievements: ["50+ Students", "Case Studies", "Pitch Sessions"],
-      color: "from-yellow-500 to-blue-500",
-    },
-  ]
-
   const educationStats = [
     { icon: Mic, value: "3", label: "Speaking Events" },
     { icon: Users, value: "400+", label: "People Reached" },
   ]
 
+  const talks = [
+    {
+      title: "Introduction to Brain Computer Interfaces",
+      type: "Workshop",
+      topic: "BCI and Its Applications in Healthcare",
+      period: "June 2024",
+      location: "Model Engineering College",
+      audience: "350+ students and faculty",
+      achievements: ["Most Interactive Session", "95% Positive Feedback"],
+      color: "from-green-400 to-blue-500",
+    },
+    {
+      title: "Cybersecurity for Vulnerable Communities",
+      type: "Talk",
+      topic: "Protecting Elderly from Digital Threats",
+      period: "March 2024", 
+      location: "Kerala University",
+      audience: "200+ computer science students",
+      achievements: ["Best Student Talk", "Extended Q&A Session"],
+      color: "from-purple-400 to-pink-500",
+    },
+    {
+      title: "Open Source Contribution Workshop",
+      type: "Technical Workshop",
+      topic: "Getting Started with GitHub and Open Source",
+      period: "January 2024",
+      location: "Amal Jyothi College",
+      audience: "150+ engineering students",
+      achievements: ["Hands-on Learning", "90% Completion Rate"],
+      color: "from-blue-400 to-indigo-500",
+    },
+  ]
+
+  const researchAreas = [
+    {
+      title: "Non-Invasive Brain Computer Interfacing", 
+      description: "Developing advanced non-invasive techniques for brain-computer interaction using EEG and other external sensors",
+      icon: Brain,
+    },
+    {
+      title: "Cybersecurity for Elderly",
+      description: "Protecting elderly populations from social engineering attacks through awareness and technological solutions", 
+      icon: Users,
+    },
+  ]
+
+  const projects = [
+    {
+      title: "Neural Signal Processing Platform",
+      description: "A comprehensive platform for processing and analyzing neural signals from EEG devices for BCI applications.",
+      tech: ["Python", "TensorFlow", "Signal Processing", "React"],
+      link: "https://github.com/user/neural-platform",
+    },
+    {
+      title: "Elderly Cybersecurity Awareness App", 
+      description: "Mobile application designed to educate elderly users about common cyber threats and prevention strategies.",
+      tech: ["React Native", "Node.js", "PostgreSQL", "Machine Learning"],
+      link: "https://github.com/user/cyber-elderly",
+    },
+  ]
+
   const skills = [
     "React",
-    "Next.js",
-    "TypeScript",
+    "Next.js", 
+    "TypeScript", 
     "Node.js",
     "Python",
     "SupaBase",
@@ -181,34 +211,6 @@ export default function Portfolio() {
     "CyberSecurity",
     "Brain Computer Interfacing",
     "Leader",
-  ]
-
-  const researchAreas = [
-    {
-      title: "Non-Invasive Brain Computer Interfacing",
-      description: "Developing advanced non-invasive techniques for brain-computer interaction using EEG and other external sensors",
-      icon: Brain,
-    },
-    {
-      title: "Cybersecurity for Elderly",
-      description: "Protecting elderly populations from social engineering attacks through awareness and technological solutions",
-      icon: Users,
-    },
-  ]
-
-  const projects = [
-    {
-      title: "WatchApp",
-      description: "A watch app for me to budget",
-      tech: ["Kotlin", "Jetpack Compose", "ADB", "WearOs"],
-      link: "#",
-    },
-    {
-      title: "Hospital Management",
-      description: "An Hospital Management tool along with a patient client side specifically tailored for elderly",
-      tech: ["React", "Socket.io", "OpenAI", "Node.js"],
-      link: "#",
-    },
   ]
 
   return (
@@ -605,7 +607,7 @@ export default function Portfolio() {
                         <p className="text-gray-300 mb-4">Audience: {talk.audience}</p>
 
                         <div className="flex flex-wrap gap-2 mb-4">
-                          {talk.achievements.map((achievement) => (
+                          {talk.achievements?.map((achievement) => (
                             <Badge key={achievement} variant="outline" className={`text-xs bg-gradient-to-r ${talk.color} bg-clip-text text-transparent border-gray-600`}>
                               {achievement}
                             </Badge>
@@ -718,6 +720,24 @@ export default function Portfolio() {
           Projects
         </motion.h2>
 
+        {loading ? (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[...Array(2)].map((_, index) => (
+              <div key={index} className="animate-pulse">
+                <Card className="bg-gray-900 border-gray-800 p-6 h-full">
+                  <div className="h-6 bg-gray-700 rounded mb-3 w-3/4"></div>
+                  <div className="h-4 bg-gray-700 rounded mb-4 w-full"></div>
+                  <div className="flex gap-2 mb-4">
+                    <div className="h-6 bg-gray-700 rounded w-16"></div>
+                    <div className="h-6 bg-gray-700 rounded w-20"></div>
+                    <div className="h-6 bg-gray-700 rounded w-14"></div>
+                  </div>
+                  <div className="h-10 bg-gray-700 rounded w-full"></div>
+                </Card>
+              </div>
+            ))}
+          </div>
+        ) : (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {projects.map((project, index) => (
             <motion.div
@@ -734,7 +754,7 @@ export default function Portfolio() {
                 <p className="text-white mb-4">{project.description}</p>
 
                 <div className="flex flex-wrap gap-2 mb-4">
-                  {project.tech.map((tech) => (
+                  {project.tech?.map((tech) => (
                     <Badge key={tech} variant="secondary" className="text-xs">
                       {tech}
                     </Badge>
@@ -742,7 +762,7 @@ export default function Portfolio() {
                 </div>
 
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <a href={project.link} target="_blank" rel="noopener noreferrer">
+                  <a href={project.link || "#"} target="_blank" rel="noopener noreferrer">
                     <Button
                       variant="outline"
                       className="w-full bg-transparent text-white border-gray-600 hover:bg-white hover:text-black transition-colors"
@@ -756,6 +776,7 @@ export default function Portfolio() {
             </motion.div>
           ))}
         </div>
+        )}
       </motion.section>
 
       {/* Skills Section - Moved to bottom */}
