@@ -33,10 +33,17 @@ export default function AchievementsPage() {
     title: "",
     description: "",
     category: "hackathon" as Achievement["category"],
+    position: "",
+    year: "",
+    location: "",
+    project_name: "",
+    prize: "",
+    participants: "",
     date: "",
     image_url: "",
     link_url: "",
     technologies: "",
+    color_gradient: "",
   })
   const [error, setError] = useState("")
   const supabase = createClient()
@@ -105,10 +112,17 @@ export default function AchievementsPage() {
       title: "",
       description: "",
       category: "hackathon",
+      position: "",
+      year: "",
+      location: "",
+      project_name: "",
+      prize: "",
+      participants: "",
       date: "",
       image_url: "",
       link_url: "",
       technologies: "",
+      color_gradient: "",
     })
     setEditingAchievement(null)
     setError("")
@@ -120,10 +134,17 @@ export default function AchievementsPage() {
       title: achievement.title,
       description: achievement.description || "",
       category: achievement.category,
-      date: achievement.date,
+      position: achievement.position || "",
+      year: achievement.year,
+      location: achievement.location || "",
+      project_name: achievement.project_name || "",
+      prize: achievement.prize || "",
+      participants: achievement.participants || "",
+      date: achievement.date || "",
       image_url: achievement.image_url || "",
       link_url: achievement.link_url || "",
       technologies: achievement.technologies?.join(", ") || "",
+      color_gradient: achievement.color_gradient || "",
     })
     setIsDialogOpen(true)
   }
@@ -148,7 +169,7 @@ export default function AchievementsPage() {
               Add Achievement
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-[525px]">
+          <DialogContent className="sm:max-w-[700px] max-h-[80vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>{editingAchievement ? "Edit Achievement" : "Add New Achievement"}</DialogTitle>
               <DialogDescription>
@@ -210,9 +231,10 @@ export default function AchievementsPage() {
                   <Label htmlFor="image_url">Image URL</Label>
                   <Input
                     id="image_url"
-                    type="url"
+                    type="text"
                     value={formData.image_url}
                     onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
+                    placeholder="https://example.com/image.jpg"
                   />
                 </div>
               </div>
@@ -220,11 +242,101 @@ export default function AchievementsPage() {
                 <Label htmlFor="link_url">Link URL</Label>
                 <Input
                   id="link_url"
-                  type="url"
+                  type="text"
                   value={formData.link_url}
                   onChange={(e) => setFormData({ ...formData, link_url: e.target.value })}
+                  placeholder="https://github.com/username/project"
                 />
               </div>
+              
+              {/* Hackathon-specific fields */}
+              {formData.category === "hackathon" && (
+                <>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="position">Position</Label>
+                      <Input
+                        id="position"
+                        value={formData.position}
+                        onChange={(e) => setFormData({ ...formData, position: e.target.value })}
+                        placeholder="1st Place, 2nd Place, etc."
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="year">Year</Label>
+                      <Input
+                        id="year"
+                        value={formData.year}
+                        onChange={(e) => setFormData({ ...formData, year: e.target.value })}
+                        placeholder="2024"
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="location">Location</Label>
+                      <Input
+                        id="location"
+                        value={formData.location}
+                        onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                        placeholder="Online, New York, etc."
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="project_name">Project Name</Label>
+                      <Input
+                        id="project_name"
+                        value={formData.project_name}
+                        onChange={(e) => setFormData({ ...formData, project_name: e.target.value })}
+                        placeholder="Your project name"
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="prize">Prize</Label>
+                      <Input
+                        id="prize"
+                        value={formData.prize}
+                        onChange={(e) => setFormData({ ...formData, prize: e.target.value })}
+                        placeholder="₹35,000, $5,000, etc."
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="participants">Participants</Label>
+                      <Input
+                        id="participants"
+                        value={formData.participants}
+                        onChange={(e) => setFormData({ ...formData, participants: e.target.value })}
+                        placeholder="1200+, 500 participants, etc."
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="color_gradient">Color Gradient</Label>
+                    <Select
+                      value={formData.color_gradient}
+                      onValueChange={(value) => setFormData({ ...formData, color_gradient: value })}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Choose a gradient" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="from-yellow-400 to-orange-500">Yellow to Orange (Gold)</SelectItem>
+                        <SelectItem value="from-blue-400 to-purple-500">Blue to Purple</SelectItem>
+                        <SelectItem value="from-green-400 to-blue-500">Green to Blue</SelectItem>
+                        <SelectItem value="from-pink-400 to-red-500">Pink to Red</SelectItem>
+                        <SelectItem value="from-purple-400 to-pink-500">Purple to Pink</SelectItem>
+                        <SelectItem value="from-indigo-400 to-blue-500">Indigo to Blue</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </>
+              )}
+              
               <div className="space-y-2">
                 <Label htmlFor="technologies">Technologies (comma-separated)</Label>
                 <Input
@@ -267,7 +379,7 @@ export default function AchievementsPage() {
                       {achievement.title}
                       <Badge variant="secondary">{achievement.category}</Badge>
                     </CardTitle>
-                    <CardDescription>{new Date(achievement.date).toLocaleDateString()}</CardDescription>
+                    <CardDescription>{achievement.date ? new Date(achievement.date).toLocaleDateString() : 'No date'}</CardDescription>
                   </div>
                   <div className="flex gap-2">
                     {achievement.link_url && (

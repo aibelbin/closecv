@@ -31,13 +31,20 @@ import {
   Mic,
 } from "lucide-react"
 import SplashCursor  from "@/components/SplashCursor"
+import HackathonWins from "@/components/hackathon-wins"
+import HackathonStats from "@/components/hackathon-stats"
+import { createClient } from "@/lib/supabase/client"
+import type { Achievement } from "@/lib/types"
 
 
 export default function Portfolio() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const [cursorRipples, setCursorRipples] = useState<Array<{ id: number; x: number; y: number }>>([])
+  const [hackathonWins, setHackathonWins] = useState<Achievement[]>([])
+  const [loading, setLoading] = useState(true)
   const { scrollYProgress } = useScroll()
+  const supabase = createClient()
 
   // Scroll-based transforms for the cinematic effect
   const heroScale = useTransform(scrollYProgress, [0, 0.4], [1, 2])
@@ -94,60 +101,27 @@ export default function Portfolio() {
     },
   }
 
-  const hackathonWins = [
-    {
-      title: "Nasa Space Apps Hackathon",
-      position: "1st Place",
-      year: "2024",
-      location: "Amal Jyothi College of engineering",
-      project: "Waste reduction and poverty management software",
-      description: "Built a website which lets restaurants donate unsold food at the end of the day to the poor",
-      prize: "₹35,000",
-      participants: "1200+",
-      tech: ["React", "Python", "supabase"],
-      color: "from-yellow-400 to-orange-500",
-      link: "https://github.com/aibelbin/nasa-space-apps-project", 
-    },
-    {
-      title: "Gen AI International Hackathon",
-      position: "5th Place",
-      year: "2024",
-      location: "Online",
-      project: "NewsRag",
-      description: "AI-powered news generation software",
-      prize: "₹65,000",
-      participants: "300+",
-      tech: ["Next.js", "Hugging Faces", "AWS", "SupaBase"],
-      color: "from-blue-400 to-purple-500",
-      link: "https://github.com/aibelbin/newsrag", // Replace with actual project link
-    },
-    {
-      title: "TinkHack",
-      position: "2nd Place",
-      year: "2025",
-      location: "Model Engineering College",
-      project: "LogiScale",
-      description: "Created a map system from scratch with better location provider and heatmaps based on cctv footages",
-      prize: "₹25,000",
-      participants: "800+",
-      tech: ["TypeScript", "Python", "Yolo V8", "SupaBase"],
-      color: "from-green-400 to-blue-500",
-      link: "https://github.com/aibelbin/logiscale", // Replace with actual project link
-    },
-    {
-      title: "Useless Projects",
-      position: "Winner",
-      year: "2025",
-      location: "Online",
-      project: "Appam Thinnam Kuzhi Ennam",
-      description: "Created a funny program to read the number of holes in an appam",
-      prize: "₹32,000",
-      participants: "1500+",
-      tech: ["React Native", "Python", "Streamlit", "SupaBase"],
-      color: "from-pink-400 to-red-500",
-      link: "https://github.com/aibelbin/appam-hole-counter", // Replace with actual project link
-    },
-  ]
+  // Fetch hackathon wins from database
+  useEffect(() => {
+    const fetchHackathonWins = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("achievements")
+          .select("*")
+          .eq("category", "hackathon")
+          .order("year", { ascending: false })
+
+        if (error) throw error
+        setHackathonWins(data || [])
+      } catch (error) {
+        console.error("Error fetching hackathon wins:", error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchHackathonWins()
+  }, [supabase])
 
   const hackathonStats = [
     { icon: Trophy, value: "6", label: "Hackathons Won" },
@@ -448,101 +422,105 @@ export default function Portfolio() {
         </motion.p>
 
         {/* Hackathon Stats */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16"
-        >
-          {hackathonStats.map((stat, index) => (
-            <motion.div
-              key={stat.label}
-              whileHover={{ scale: 1.05, y: -5 }}
-              className="text-center p-6 border border-gray-800 rounded-lg hover:border-yellow-500 transition-colors"
-            >
-              <motion.div whileHover={{ rotate: 360 }} transition={{ duration: 0.6 }} className="mb-3">
-                <stat.icon size={32} className="mx-auto text-yellow-400" />
-              </motion.div>
-              <div className="text-3xl font-bold mb-2 text-yellow-400">{stat.value}</div>
-              <div className="text-gray-400 text-sm">{stat.label}</div>
-            </motion.div>
-          ))}
-        </motion.div>
+        <HackathonStats />
 
         {/* Hackathon Wins */}
-        <div className="space-y-8">
-          {hackathonWins.map((hackathon, index) => (
-            <motion.div
-              key={hackathon.title}
-              initial={{ x: index % 2 === 0 ? -100 : 100, opacity: 0 }}
-              whileInView={{ x: 0, opacity: 1 }}
-              transition={{ delay: index * 0.2 }}
-              whileHover={{ scale: 1.02, y: -5 }}
-              className="relative"
-            >
-              <Card className="bg-gray-900 border-gray-800 p-8 hover:border-gray-600 transition-all duration-300 overflow-hidden">
-                {/* Gradient Background */}
-                <div
-                  className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${hackathon.color} opacity-10 rounded-full blur-2xl`}
-                />
-
-                <div className="relative z-10">
+        {loading ? (
+          <div className="space-y-8">
+            {[...Array(3)].map((_, index) => (
+              <div key={index} className="animate-pulse">
+                <Card className="bg-gray-900 border-gray-800 p-8">
                   <div className="flex flex-col md:flex-row md:items-start justify-between mb-6">
                     <div className="flex-1">
-                      <div className="flex items-center space-x-3 mb-3">
-                        <motion.div whileHover={{ rotate: 360, scale: 1.2 }} transition={{ duration: 0.6 }}>
-                          <Trophy size={28} className="text-yellow-400" />
-                        </motion.div>
-                        <Badge className={`bg-gradient-to-r ${hackathon.color} text-black font-bold px-3 py-1`}>
-                          {hackathon.position}
-                        </Badge>
-                      </div>
-
-                      <h3 className={`text-2xl font-bold mb-2 bg-gradient-to-r ${hackathon.color} bg-clip-text text-transparent`}>{hackathon.title}</h3>
-                      <h4 className={`text-xl mb-3 bg-gradient-to-r ${hackathon.color} bg-clip-text text-transparent font-semibold`}>{hackathon.project}</h4>
-                      <p className="text-gray-300 mb-4">{hackathon.description}</p>
-
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        {hackathon.tech.map((tech) => (
-                          <Badge key={tech} variant="outline" className={`text-xs bg-gradient-to-r ${hackathon.color} bg-clip-text text-transparent border-gray-600`}>
-                            {tech}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="md:ml-8 mt-4 md:mt-0">
-                      <div className="text-right space-y-2">
-                        <div className="flex items-center justify-end space-x-2 text-sm text-gray-400">
-                          <Calendar size={16} />
-                          <span>{hackathon.year}</span>
-                        </div>
-                        <div className="flex items-center justify-end space-x-2 text-sm text-gray-400">
-                          <MapPin size={16} />
-                          <span>{hackathon.location}</span>
-                        </div>
-                        <div className="flex items-center justify-end space-x-2 text-sm text-gray-400">
-                          <Users size={16} />
-                          <span>{hackathon.participants} participants</span>
-                        </div>
-                        <div className="text-2xl font-bold text-green-400">{hackathon.prize}</div>
+                      <div className="h-8 bg-gray-700 rounded mb-4 w-3/4"></div>
+                      <div className="h-6 bg-gray-700 rounded mb-3 w-1/2"></div>
+                      <div className="h-4 bg-gray-700 rounded mb-4 w-full"></div>
+                      <div className="flex gap-2">
+                        <div className="h-6 bg-gray-700 rounded w-16"></div>
+                        <div className="h-6 bg-gray-700 rounded w-20"></div>
+                        <div className="h-6 bg-gray-700 rounded w-24"></div>
                       </div>
                     </div>
                   </div>
+                </Card>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="space-y-8">
+            {hackathonWins.map((hackathon, index) => (
+              <motion.div
+                key={hackathon.title}
+                initial={{ x: index % 2 === 0 ? -100 : 100, opacity: 0 }}
+                whileInView={{ x: 0, opacity: 1 }}
+                transition={{ delay: index * 0.2 }}
+                whileHover={{ scale: 1.02, y: -5 }}
+                className="relative"
+              >
+                <Card className="bg-gray-900 border-gray-800 p-8 hover:border-gray-600 transition-all duration-300 overflow-hidden">
+                  {/* Gradient Background */}
+                  <div
+                    className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${hackathon.color_gradient || 'from-blue-400 to-purple-500'} opacity-10 rounded-full blur-2xl`}
+                  />
 
-                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="flex justify-end">
-                    <a href={hackathon.link} target="_blank" rel="noopener noreferrer">
-                      <Button variant="outline" className={`bg-transparent text-white border-gray-600 hover:bg-gradient-to-r hover:${hackathon.color} hover:text-black hover:border-transparent transition-all duration-300`}>
-                        <ExternalLink size={16} className="mr-2" />
-                        View Project
-                      </Button>
-                    </a>
-                  </motion.div>
-                </div>
-              </Card>
-            </motion.div>
-          ))}
-        </div>
+                  <div className="relative z-10">
+                    <div className="flex flex-col md:flex-row md:items-start justify-between mb-6">
+                      <div className="flex-1">
+                        <div className="flex items-center space-x-3 mb-3">
+                          <motion.div whileHover={{ rotate: 360, scale: 1.2 }} transition={{ duration: 0.6 }}>
+                            <Trophy size={28} className="text-yellow-400" />
+                          </motion.div>
+                          <Badge className={`bg-gradient-to-r ${hackathon.color_gradient || 'from-blue-400 to-purple-500'} text-black font-bold px-3 py-1`}>
+                            {hackathon.position}
+                          </Badge>
+                        </div>
+
+                        <h3 className={`text-2xl font-bold mb-2 bg-gradient-to-r ${hackathon.color_gradient || 'from-blue-400 to-purple-500'} bg-clip-text text-transparent`}>{hackathon.title}</h3>
+                        <h4 className={`text-xl mb-3 bg-gradient-to-r ${hackathon.color_gradient || 'from-blue-400 to-purple-500'} bg-clip-text text-transparent font-semibold`}>{hackathon.project_name}</h4>
+                        <p className="text-gray-300 mb-4">{hackathon.description}</p>
+
+                        <div className="flex flex-wrap gap-2 mb-4">
+                          {hackathon.technologies?.map((tech) => (
+                            <Badge key={tech} variant="outline" className={`text-xs bg-gradient-to-r ${hackathon.color_gradient || 'from-blue-400 to-purple-500'} bg-clip-text text-transparent border-gray-600`}>
+                              {tech}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="md:ml-8 mt-4 md:mt-0">
+                        <div className="text-right space-y-2">
+                          <div className="flex items-center justify-end space-x-2 text-sm text-gray-400">
+                            <Calendar size={16} />
+                            <span>{hackathon.year}</span>
+                          </div>
+                          <div className="flex items-center justify-end space-x-2 text-sm text-gray-400">
+                            <MapPin size={16} />
+                            <span>{hackathon.location}</span>
+                          </div>
+                          <div className="flex items-center justify-end space-x-2 text-sm text-gray-400">
+                            <Users size={16} />
+                            <span>{hackathon.participants} participants</span>
+                          </div>
+                          <div className="text-2xl font-bold text-green-400">{hackathon.prize}</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="flex justify-end">
+                      <a href={hackathon.link_url} target="_blank" rel="noopener noreferrer">
+                        <Button variant="outline" className={`bg-transparent text-white border-gray-600 hover:bg-gradient-to-r hover:${hackathon.color_gradient || 'from-blue-400 to-purple-500'} hover:text-black hover:border-transparent transition-all duration-300`}>
+                          <ExternalLink size={16} className="mr-2" />
+                          View Project
+                        </Button>
+                      </a>
+                    </motion.div>
+                  </div>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        )}
       </motion.section>
 
       {/* Talks & Speaking Section */}

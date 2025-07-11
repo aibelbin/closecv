@@ -76,7 +76,7 @@ export default function PortfolioAchievements() {
                   <CardTitle className="text-xl">{achievement.title}</CardTitle>
                   <CardDescription className="flex items-center gap-2">
                     <Calendar className="h-4 w-4" />
-                    {new Date(achievement.date).toLocaleDateString()}
+                    {achievement.date ? new Date(achievement.date).toLocaleDateString() : 'No date'}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
