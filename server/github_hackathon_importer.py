@@ -7,10 +7,9 @@ from datetime import datetime
 from typing import Dict, List, Optional, Any
 from dataclasses import dataclass
 from supabase import create_client, Client
-import openai
+from groq import Groq
 from dotenv import load_dotenv
 
-# Load environment variables
 load_dotenv()
 
 @dataclass
@@ -33,25 +32,17 @@ class GitHubHackathonImporter:
     def __init__(self, dry_run: bool = True):
         self.dry_run = dry_run
         self.github_token = os.getenv('GITHUB_TOKEN')
-        self.openai_api_key = os.getenv('OPENAI_API_KEY')
+        self.groq_api_key = os.getenv('GROQ_API_KEY')
         self.supabase_url = os.getenv('SUPABASE_URL')
         self.supabase_key = os.getenv('SUPABASE_ANON_KEY')
-        
-        # Validate environment variables
         self._validate_env_vars()
-        
-        # Initialize clients
         self.supabase: Client = create_client(self.supabase_url, self.supabase_key)
-        openai.api_key = self.openai_api_key
-        
-        # Hackathon keywords for detection
+        # .api_key = self.groq_api_key
         self.hackathon_keywords = [
             'hackathon', 'devpost', 'submission', '24 hour', '48 hour',
             'built in', 'hack', 'datathon', 'makeathon', 'code jam',
             'programming contest', 'coding competition', 'tech challenge'
         ]
-        
-        # Color gradients for variety
         self.color_gradients = [
             "from-blue-400 to-purple-500",
             "from-green-400 to-blue-500", 
@@ -62,22 +53,31 @@ class GitHubHackathonImporter:
         ]
 
     def _validate_env_vars(self):
-        """Validate that all required environment variables are set"""
-        required_vars = ['GITHUB_TOKEN', 'OPENAI_API_KEY', 'SUPABASE_URL', 'SUPABASE_ANON_KEY']
+        required_vars = ['GITHUB_TOKEN', 'GROQ_API_KEY', 'SUPABASE_URL', 'SUPABASE_ANON_KEY']
         missing_vars = [var for var in required_vars if not os.getenv(var)]
-        
         if missing_vars:
             raise ValueError(f"Missing required environment variables: {', '.join(missing_vars)}")
 
     async def fetch_github_repos(self) -> List[Dict[str, Any]]:
-        """Fetch all repositories from GitHub"""
-        print("🔍 Fetching GitHub repositories...")
-        
         headers = {
             'Authorization': f'token {self.github_token}',
             'Accept': 'application/vnd.github.v3+json'
         }
-        
+        repos = []
+        page = 1
+        async with aiohttp.ClientSession() as session:
+            while True:
+                url = f'https://api.github.com/user/repos?page={page}&per_page=100&type=all'
+                async with session.get(url, headers=headers) as response:
+                    if response.status != 200:
+                        raise Exception(f"GitHub API error: {response.status}")
+                    data = await response.json()
+                    if not data:
+                        break
+                    repos.extend(data)
+                    page += 1
+        return repos
+
         repos = []
         page = 1
         
@@ -96,7 +96,7 @@ class GitHubHackathonImporter:
                     repos.extend(data)
                     page += 1
         
-        print(f"📦 Found {len(repos)} repositories")
+        print(f" Found {len(repos)} repositories")
         return repos
 
     async def fetch_readme_content(self, repo: Dict[str, Any]) -> Optional[str]:
@@ -126,10 +126,10 @@ class GitHubHackathonImporter:
         return None
 
     def is_hackathon_project(self, repo: Dict[str, Any], readme_content: Optional[str]) -> bool:
-        """Check if a repository is likely a hackathon project"""
+       
         text_to_check = []
         
-        # Check repo name, description, and README
+       
         if repo.get('name'):
             text_to_check.append(repo['name'].lower())
         if repo.get('description'):
@@ -148,7 +148,7 @@ class GitHubHackathonImporter:
 
     async def extract_hackathon_data(self, repo: Dict[str, Any], readme_content: str) -> Optional[HackathonProject]:
         """Use OpenAI to extract structured hackathon data"""
-        print(f"🤖 Analyzing {repo['name']} with AI...")
+        print(f" Analyzing {repo['name']} with AI...")
         
         prompt = f"""
         Analyze this GitHub repository and README content to extract hackathon project information.
@@ -180,14 +180,17 @@ class GitHubHackathonImporter:
         """
         
         try:
-            response = await openai.ChatCompletion.acreate(
-                model="gpt-3.5-turbo",
+
+            client = Groq(api_key=os.environ.get("GROQ_API_KEY"),)
+
+
+            response = client.chat.completions.create(
                 messages=[
                     {"role": "system", "content": "You are an expert at analyzing hackathon projects and extracting structured data. Return valid JSON only."},
                     {"role": "user", "content": prompt}
                 ],
-                max_tokens=500,
-                temperature=0.1
+                model="llama-3.3-70b-versatile",
+                stream = False
             )
             
             content = response.choices[0].message.content.strip()
