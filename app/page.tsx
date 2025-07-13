@@ -216,7 +216,7 @@ export default function Portfolio() {
   return (
 
     
-    <div className="bg-black text-white min-h-screen overflow-x-hidden">
+    <div className="bg-black text-white min-h-screen overflow-x-hidden" style={{ backgroundColor: '#000000', minHeight: '100vh' }}>
       
       <SplashCursor/>
       {/* Navigation */}
