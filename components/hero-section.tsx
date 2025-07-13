@@ -1,14 +1,9 @@
 "use client"
 
-import { motion, useScroll, useTransform } from "framer-motion"
+import { motion } from "framer-motion"
 import { Github, Linkedin, Mail, ArrowDown } from "lucide-react"
 
 export default function HeroSection() {
-  const { scrollYProgress } = useScroll()
-  const heroScale = useTransform(scrollYProgress, [0, 0.4], [1, 2])
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.2, 0.4], [1, 0.5, 0])
-  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "100%"])
-
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -34,21 +29,18 @@ export default function HeroSection() {
 
   return (
     <section className="min-h-screen flex items-center justify-center relative overflow-hidden">
-      <motion.div style={{ y: backgroundY }} className="absolute inset-0 opacity-10">
+      {/* Static background - no scroll effects for now */}
+      <div className="absolute inset-0 opacity-10">
         <div className="absolute top-20 left-20 w-72 h-72 bg-white rounded-full blur-3xl" />
         <div className="absolute bottom-20 right-20 w-96 h-96 bg-gray-400 rounded-full blur-3xl" />
-      </motion.div>
+      </div>
 
-      {/* Hero Text with Zoom and Fade Effect */}
+      {/* Hero Text - Static and reliable */}
       <motion.div
         variants={containerVariants}
         initial="hidden"
         animate="visible"
         className="text-center z-10"
-        style={{
-          scale: heroScale,
-          opacity: heroOpacity,
-        }}
       >
         <motion.h1 variants={itemVariants} className="text-6xl md:text-8xl font-bold mb-6">
           {"Aibel Bin Zacariah".split("").map((char, index) => (
