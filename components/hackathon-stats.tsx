@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react"
 import { createClient } from "@/lib/supabase/client"
-import { Card, CardContent } from "@/components/ui/card"
 import { Trophy, Award, Users, Target } from "lucide-react"
 import type { Achievement } from "@/lib/types"
 
@@ -93,13 +92,13 @@ export default function HackathonStats() {
     return (
       <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
         {[...Array(4)].map((_, i) => (
-          <Card key={i} className="animate-pulse">
-            <CardContent className="p-6 text-center">
-              <div className="h-8 w-8 bg-gray-300 rounded-full mx-auto mb-4"></div>
-              <div className="h-8 w-16 bg-gray-300 rounded mx-auto mb-2"></div>
-              <div className="h-4 w-20 bg-gray-300 rounded mx-auto"></div>
-            </CardContent>
-          </Card>
+          <div key={i} className="animate-pulse">
+            <div className="text-center p-6 border border-gray-800 rounded-lg bg-gray-900">
+              <div className="h-8 w-8 bg-gray-700 rounded-full mx-auto mb-4"></div>
+              <div className="h-8 w-16 bg-gray-700 rounded mx-auto mb-2"></div>
+              <div className="h-4 w-20 bg-gray-700 rounded mx-auto"></div>
+            </div>
+          </div>
         ))}
       </div>
     )
@@ -111,15 +110,13 @@ export default function HackathonStats() {
         const IconComponent = stat.icon
 
         return (
-          <Card key={stat.id} className="group hover:shadow-lg transition-shadow">
-            <CardContent className="p-6 text-center">
-              <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full mb-4 group-hover:scale-110 transition-transform">
-                <IconComponent className="h-6 w-6 text-white" />
-              </div>
-              <div className="text-3xl font-bold mb-2">{stat.value}</div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">{stat.label}</div>
-            </CardContent>
-          </Card>
+          <div key={stat.id} className="text-center p-6 border border-gray-800 rounded-lg bg-gray-900 hover:border-blue-500 transition-colors group">
+            <div className="mb-3">
+              <IconComponent className="h-8 w-8 mx-auto text-blue-400 group-hover:scale-110 transition-transform" />
+            </div>
+            <div className="text-3xl font-bold mb-2 text-blue-400">{stat.value}</div>
+            <div className="text-sm text-gray-400">{stat.label}</div>
+          </div>
         )
       })}
     </div>
