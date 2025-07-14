@@ -283,8 +283,6 @@ export default function AchievementsPage() {
                         placeholder="Online, New York, etc."
                       />
                     </div>
-                  
-                  <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="project_name">Project Name</Label>
                       <Input
