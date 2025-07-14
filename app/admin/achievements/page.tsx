@@ -205,44 +205,48 @@ export default function AchievementsPage() {
                 </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="description">Description</Label>
+                <Label htmlFor="description" className="text-gray-900 dark:text-white">Description</Label>
                 <Textarea
                   id="description"
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   rows={3}
+                  className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600"
                 />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="date">Date</Label>
+                  <Label htmlFor="date" className="text-gray-900 dark:text-white">Date</Label>
                   <Input
                     id="date"
                     type="date"
                     value={formData.date}
                     onChange={(e) => setFormData({ ...formData, date: e.target.value })}
                     required
+                    className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="image_url">Image URL</Label>
+                  <Label htmlFor="image_url" className="text-gray-900 dark:text-white">Image URL</Label>
                   <Input
                     id="image_url"
                     type="text"
                     value={formData.image_url}
                     onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
                     placeholder="https://example.com/image.jpg"
+                    className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600"
                   />
                 </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="link_url">Link URL</Label>
+                <Label htmlFor="link_url" className="text-gray-900 dark:text-white">Link URL</Label>
                 <Input
                   id="link_url"
                   type="text"
                   value={formData.link_url}
                   onChange={(e) => setFormData({ ...formData, link_url: e.target.value })}
                   placeholder="https://github.com/username/project"
+                  className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600"
                 />
               </div>
               
@@ -251,69 +255,75 @@ export default function AchievementsPage() {
                 <>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="position">Position</Label>
+                      <Label htmlFor="position" className="text-gray-900 dark:text-white">Position</Label>
                       <Input
                         id="position"
                         value={formData.position}
                         onChange={(e) => setFormData({ ...formData, position: e.target.value })}
                         placeholder="1st Place, 2nd Place, etc."
+                        className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600"
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="year">Year</Label>
+                      <Label htmlFor="year" className="text-gray-900 dark:text-white">Year</Label>
                       <Input
                         id="year"
                         value={formData.year}
                         onChange={(e) => setFormData({ ...formData, year: e.target.value })}
                         placeholder="2024"
+                        className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600"
                       />
                     </div>
                   </div>
                   
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="location">Location</Label>
+                      <Label htmlFor="location" className="text-gray-900 dark:text-white">Location</Label>
                       <Input
                         id="location"
                         value={formData.location}
                         onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                         placeholder="Online, New York, etc."
+                        className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600"
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="project_name">Project Name</Label>
+                      <Label htmlFor="project_name" className="text-gray-900 dark:text-white">Project Name</Label>
                       <Input
                         id="project_name"
                         value={formData.project_name}
                         onChange={(e) => setFormData({ ...formData, project_name: e.target.value })}
                         placeholder="Your project name"
+                        className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600"
                       />
                     </div>
                   </div>
                   
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="prize">Prize</Label>
+                      <Label htmlFor="prize" className="text-gray-900 dark:text-white">Prize</Label>
                       <Input
                         id="prize"
                         value={formData.prize}
                         onChange={(e) => setFormData({ ...formData, prize: e.target.value })}
                         placeholder="₹35,000, $5,000, etc."
+                        className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600"
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="participants">Participants</Label>
+                      <Label htmlFor="participants" className="text-gray-900 dark:text-white">Participants</Label>
                       <Input
                         id="participants"
                         value={formData.participants}
                         onChange={(e) => setFormData({ ...formData, participants: e.target.value })}
                         placeholder="1200+, 500 participants, etc."
+                        className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600"
                       />
                     </div>
                   </div>
                   
                   <div className="space-y-2">
-                    <Label htmlFor="color_gradient">Color Gradient</Label>
+                    <Label htmlFor="color_gradient" className="text-gray-900 dark:text-white">Color Gradient</Label>
                     <Select
                       value={formData.color_gradient}
                       onValueChange={(value) => setFormData({ ...formData, color_gradient: value })}
@@ -335,12 +345,13 @@ export default function AchievementsPage() {
               )}
               
               <div className="space-y-2">
-                <Label htmlFor="technologies">Technologies (comma-separated)</Label>
+                <Label htmlFor="technologies" className="text-gray-900 dark:text-white">Technologies (comma-separated)</Label>
                 <Input
                   id="technologies"
                   value={formData.technologies}
                   onChange={(e) => setFormData({ ...formData, technologies: e.target.value })}
                   placeholder="React, Node.js, MongoDB"
+                  className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600"
                 />
               </div>
               {error && (
