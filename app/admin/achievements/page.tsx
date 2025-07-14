@@ -1,7 +1,6 @@
 "use client"
 
 import type React from "react"
-
 import { useEffect, useState } from "react"
 import { createClient } from "@/lib/supabase/client"
 import { Button } from "@/components/ui/button"
@@ -78,11 +77,9 @@ export default function AchievementsPage() {
 
       if (editingAchievement) {
         const { error } = await supabase.from("achievements").update(achievementData).eq("id", editingAchievement.id)
-
         if (error) throw error
       } else {
         const { error } = await supabase.from("achievements").insert([achievementData])
-
         if (error) throw error
       }
 
@@ -99,7 +96,6 @@ export default function AchievementsPage() {
 
     try {
       const { error } = await supabase.from("achievements").delete().eq("id", id)
-
       if (error) throw error
       await fetchAchievements()
     } catch (error: any) {
@@ -171,8 +167,8 @@ export default function AchievementsPage() {
           </DialogTrigger>
           <DialogContent className="sm:max-w-[700px] max-h-[80vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle>{editingAchievement ? "Edit Achievement" : "Add New Achievement"}</DialogTitle>
-              <DialogDescription>
+              <DialogTitle className="text-gray-900 dark:text-white">{editingAchievement ? "Edit Achievement" : "Add New Achievement"}</DialogTitle>
+              <DialogDescription className="text-gray-700 dark:text-gray-300">
                 {editingAchievement
                   ? "Update your achievement details below."
                   : "Add a new achievement to your portfolio."}
@@ -181,16 +177,17 @@ export default function AchievementsPage() {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="title">Title</Label>
+                  <Label htmlFor="title" className="text-gray-900 dark:text-white">Title</Label>
                   <Input
                     id="title"
                     value={formData.title}
                     onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                     required
+                    className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="category">Category</Label>
+                  <Label htmlFor="category" className="text-gray-900 dark:text-white">Category</Label>
                   <Select
                     value={formData.category}
                     onValueChange={(value: Achievement["category"]) => setFormData({ ...formData, category: value })}
@@ -283,8 +280,6 @@ export default function AchievementsPage() {
                         placeholder="Online, New York, etc."
                       />
                     </div>
-                  
-                  <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="project_name">Project Name</Label>
                       <Input
