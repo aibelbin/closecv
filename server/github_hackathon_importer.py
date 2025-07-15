@@ -34,7 +34,8 @@ class GitHubHackathonImporter:
         self.github_token = os.getenv('GITHUB_TOKEN')
         self.groq_api_key = os.getenv('GROQ_API_KEY')
         self.supabase_url = os.getenv('SUPABASE_URL')
-        self.supabase_key = os.getenv('SUPABASE_ANON_KEY')
+        # Use service role key for admin operations, fallback to anon key
+        self.supabase_key = os.getenv('SUPABASE_SERVICE_ROLE_KEY') or os.getenv('SUPABASE_ANON_KEY')
         self._validate_env_vars()
         self.supabase: Client = create_client(self.supabase_url, self.supabase_key)
         self.groq_client = Groq(api_key=self.groq_api_key)
@@ -292,7 +293,8 @@ if not a hackathon project, return: {{"is_hackathon": false}}"""
             traceback.print_exc()
 
 async def main():
-    dry_run = True
+    dry_run_env = os.getenv('DRY_RUN', 'True').lower()
+    dry_run = dry_run_env in ['true', '1', 'yes', 'on']
     importer = GitHubHackathonImporter(dry_run=dry_run)
     await importer.run()
 
