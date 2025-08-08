@@ -34,7 +34,6 @@ class GitHubHackathonImporter:
         self.github_token = os.getenv('GITHUB_TOKEN')
         self.groq_api_key = os.getenv('GROQ_API_KEY')
         self.supabase_url = os.getenv('SUPABASE_URL')
-        # Use service role key for admin operations, fallback to anon key
         self.supabase_key = os.getenv('SUPABASE_SERVICE_ROLE_KEY') or os.getenv('SUPABASE_ANON_KEY')
         self._validate_env_vars()
         self.supabase: Client = create_client(self.supabase_url, self.supabase_key)
@@ -61,7 +60,6 @@ class GitHubHackathonImporter:
             raise ValueError(f"missing required environment variables: {', '.join(missing_vars)}")
 
     async def fetch_github_repos(self) -> List[Dict[str, Any]]:
-        print("fetching github repositories...")
         headers = {
             'Authorization': f'token {self.github_token}',
             'Accept': 'application/vnd.github.v3+json'
@@ -79,7 +77,6 @@ class GitHubHackathonImporter:
                         break
                     repos.extend(data)
                     page += 1
-        print(f"found {len(repos)} repositories")
         return repos
 
     async def fetch_readme_content(self, repo: Dict[str, Any]) -> Optional[str]:
@@ -118,7 +115,6 @@ class GitHubHackathonImporter:
         return False
 
     async def extract_hackathon_data(self, repo: Dict[str, Any], readme_content: str) -> Optional[HackathonProject]:
-        print(f"analyzing {repo['name']} with ai...")
         prompt = f"""analyze this github repository and extract hackathon information as json.
 
 repository: {repo['name']}
@@ -157,25 +153,19 @@ if not a hackathon project, return: {{"is_hackathon": false}}"""
                 max_tokens=400
             )
             content = response.choices[0].message.content.strip()
-            print(f"raw ai response for {repo['name']}: {content}")
             if content.startswith('```json'):
                 content = content.replace('```json', '').replace('```', '').strip()
             elif content.startswith('```'):
                 content = content.replace('```', '').strip()
             if not content or content.lower().strip() in ['null', 'none', '']:
-                print(f"ai returned empty response for {repo['name']}")
                 return None
             try:
                 data = json.loads(content)
             except json.JSONDecodeError as json_error:
-                print(f"json parsing error for {repo['name']}: {json_error}")
-                print(f"content was: {content}")
                 return None
             if data.get('is_hackathon') == False:
-                print(f"ai determined {repo['name']} is not a hackathon project")
                 return None
             if not data.get('title') and not data.get('project_name'):
-                print(f"missing required fields for {repo['name']}")
                 return None
             project = HackathonProject(
                 title=data.get('title', repo['name']),
@@ -191,13 +181,9 @@ if not a hackathon project, return: {{"is_hackathon": false}}"""
                 position=data.get('position'),
                 color_gradient=self.color_gradients[hash(data.get('title', repo['name'])) % len(self.color_gradients)]
             )
-            print(f"successfully parsed data for {repo['name']}: {project.title}")
             return project
         except Exception as e:
-            print(f"error analyzing {repo['name']}: {e}")
-            print(f"error type: {type(e).__name__}")
             if "hackathon" in repo['name'].lower() or "nasa" in repo['name'].lower():
-                print(f"creating fallback project for {repo['name']}")
                 return HackathonProject(
                     title=repo['name'].replace('_', ' ').replace('-', ' ').title(),
                     project_name=repo['name'],
@@ -210,7 +196,6 @@ if not a hackathon project, return: {{"is_hackathon": false}}"""
 
     async def save_to_supabase(self, project: HackathonProject) -> bool:
         if self.dry_run:
-            print(f"dry run - would save: {project.title}")
             return True
         try:
             data = {
@@ -231,35 +216,27 @@ if not a hackathon project, return: {{"is_hackathon": false}}"""
             }
             result = self.supabase.table('achievements').insert(data).execute()
             if result.data:
-                print(f"saved: {project.title}")
                 return True
             else:
-                print(f"failed to save: {project.title}")
                 return False
         except Exception as e:
-            print(f"error saving {project.title}: {e}")
             return False
 
     async def run(self):
-        print("starting github hackathon importer...")
-        print(f"mode: {'dry run' if self.dry_run else 'live'}")
         try:
             repos = await self.fetch_github_repos()
             hackathon_projects = []
             processed = 0
             for repo in repos:
                 processed += 1
-                print(f"processing {processed}/{len(repos)}: {repo['name']}")
                 readme_content = await self.fetch_readme_content(repo)
                 if self.is_hackathon_project(repo, readme_content):
-                    print(f"detected hackathon project: {repo['name']}")
                     if readme_content:
                         project = await self.extract_hackathon_data(repo, readme_content)
                         if project:
                             hackathon_projects.append(project)
                             await self.save_to_supabase(project)
                     else:
-                        print(f"no readme found for {repo['name']}, creating fallback...")
                         if any(keyword in repo['name'].lower() for keyword in ['hackathon', 'nasa', 'space-apps', 'crushathon']):
                             project = HackathonProject(
                                 title=repo['name'].replace('_', ' ').replace('-', ' ').title(),
@@ -272,23 +249,7 @@ if not a hackathon project, return: {{"is_hackathon": false}}"""
                             hackathon_projects.append(project)
                             await self.save_to_supabase(project)
                 await asyncio.sleep(0.5)
-            print(f"\nsummary:")
-            print(f"total repositories: {len(repos)}")
-            print(f"hackathon projects found: {len(hackathon_projects)}")
-            print(f"projects saved: {len(hackathon_projects) if not self.dry_run else 0}")
-            if self.dry_run:
-                print("\nthis was a dry run. set dry_run=false to actually save data.")
-            if hackathon_projects:
-                print(f"\nfound hackathon projects:")
-                for project in hackathon_projects:
-                    print(f"   • {project.title} ({project.year}) - {project.position or 'no position'}")
-            else:
-                print(f"\ntips for better detection:")
-                print(f"make sure repo names/descriptions contain hackathon keywords")
-                print(f"add readme files to your hackathon projects")
-                print(f"include words like 'hackathon', 'devpost', 'nasa space apps', etc.")
         except Exception as e:
-            print(f"fatal error: {e}")
             import traceback
             traceback.print_exc()
 
