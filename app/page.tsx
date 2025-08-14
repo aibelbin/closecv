@@ -31,11 +31,12 @@ import {
   Mic,
 } from "lucide-react"
 import SplashCursor  from "@/components/SplashCursor"
-import HackathonWins from "@/components/hackathon-wins"
 import HackathonStats from "@/components/hackathon-stats"
 import HeroSection from "@/components/hero-section"
-import { createClient } from "@/lib/supabase/client"
 import type { Achievement } from "@/lib/types"
+import hackathonsData from "@/data/hackathons.json"
+import talksData from "@/data/talks.json"
+import researchData from "@/data/research.json"
 
 
 export default function Portfolio() {
@@ -44,7 +45,6 @@ export default function Portfolio() {
   const [cursorRipples, setCursorRipples] = useState<Array<{ id: number; x: number; y: number }>>([])
   const [hackathonWins, setHackathonWins] = useState<Achievement[]>([])
   const [loading, setLoading] = useState(true)
-  const supabase = createClient()
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -96,29 +96,17 @@ export default function Portfolio() {
     },
   }
 
-  // Fetch data from database
+  // Load data from local JSON
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // Fetch hackathon wins
-        const { data: hackathonData, error: hackathonError } = await supabase
-          .from("achievements")
-          .select("*")
-          .eq("category", "hackathon")
-          .order("year", { ascending: false })
-
-        if (hackathonError) throw hackathonError
-        setHackathonWins(hackathonData || [])
-
-      } catch (error) {
-        console.error("Error fetching data:", error)
-      } finally {
-        setLoading(false)
-      }
+    try {
+      const data = (hackathonsData as unknown as Achievement[])
+        .filter(h => h.category === "hackathon")
+        .sort((a, b) => parseInt(b.year || "0") - parseInt(a.year || "0"))
+      setHackathonWins(data)
+    } finally {
+      setLoading(false)
     }
-
-    fetchData()
-  }, [supabase])
+  }, [])
 
   const hackathonStats = [
     { icon: Trophy, value: "6", label: "Hackathons Won" },
@@ -132,51 +120,22 @@ export default function Portfolio() {
     { icon: Users, value: "400+", label: "People Reached" },
   ]
 
-  const talks = [
-    {
-      title: "Introduction to Brain Computer Interfaces",
-      type: "Workshop",
-      topic: "BCI and Its Applications in Healthcare",
-      period: "June 2024",
-      location: "Model Engineering College",
-      audience: "350+ students and faculty",
-      achievements: ["Most Interactive Session", "95% Positive Feedback"],
-      color: "from-green-400 to-blue-500",
-    },
-    {
-      title: "Cybersecurity for Vulnerable Communities",
-      type: "Talk",
-      topic: "Protecting Elderly from Digital Threats",
-      period: "March 2024", 
-      location: "Kerala University",
-      audience: "200+ computer science students",
-      achievements: ["Best Student Talk", "Extended Q&A Session"],
-      color: "from-purple-400 to-pink-500",
-    },
-    {
-      title: "Open Source Contribution Workshop",
-      type: "Technical Workshop",
-      topic: "Getting Started with GitHub and Open Source",
-      period: "January 2024",
-      location: "Amal Jyothi College",
-      audience: "150+ engineering students",
-      achievements: ["Hands-on Learning", "90% Completion Rate"],
-      color: "from-blue-400 to-indigo-500",
-    },
-  ]
+  const talks = (talksData as Array<any>).map(t => ({
+    title: t.title,
+    type: t.type,
+    topic: t.topic,
+    period: t.period,
+    location: t.location,
+    audience: t.audience,
+    achievements: t.achievements,
+    color: t.color_gradient || "from-blue-400 to-indigo-500"
+  }))
 
-  const researchAreas = [
-    {
-      title: "Non-Invasive Brain Computer Interfacing", 
-      description: "Developing advanced non-invasive techniques for brain-computer interaction using EEG and other external sensors",
-      icon: Brain,
-    },
-    {
-      title: "Cybersecurity for Elderly",
-      description: "Protecting elderly populations from social engineering attacks through awareness and technological solutions", 
-      icon: Users,
-    },
-  ]
+  const researchAreas = (researchData as Array<any>).map(r => ({
+    title: r.title,
+    description: r.description,
+    icon: (r.icon_name === 'Users' ? Users : Brain)
+  }))
 
   const projects = [
     {

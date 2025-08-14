@@ -1,33 +1,24 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { createClient } from "@/lib/supabase/client"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { MapPin, Users, Calendar, CheckCircle } from "lucide-react"
 import type { Talk } from "@/lib/types"
+import talksData from "@/data/talks.json"
 
 export default function TalksSection() {
   const [talks, setTalks] = useState<Talk[]>([])
   const [loading, setLoading] = useState(true)
-  const supabase = createClient()
 
   useEffect(() => {
-    const fetchTalks = async () => {
-      try {
-        const { data, error } = await supabase.from("talks").select("*").order("period", { ascending: false })
-
-        if (error) throw error
-        setTalks(data || [])
-      } catch (error) {
-        console.error("Error fetching talks:", error)
-      } finally {
-        setLoading(false)
-      }
+    try {
+      const sorted = (talksData as unknown as Talk[]).slice().sort((a, b) => (b.period || "").localeCompare(a.period || ""))
+      setTalks(sorted)
+    } finally {
+      setLoading(false)
     }
-
-    fetchTalks()
-  }, [supabase])
+  }, [])
 
   if (loading) {
     return (

@@ -1,38 +1,27 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { createClient } from "@/lib/supabase/client"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Trophy, MapPin, Users, Gift, ExternalLink, Github } from "lucide-react"
 import type { Achievement } from "@/lib/types"
+import hackathonsData from "@/data/hackathons.json"
 
 export default function HackathonWins() {
   const [hackathons, setHackathons] = useState<Achievement[]>([])
   const [loading, setLoading] = useState(true)
-  const supabase = createClient()
 
   useEffect(() => {
-    const fetchHackathons = async () => {
-      try {
-        const { data, error } = await supabase
-          .from("achievements")
-          .select("*")
-          .eq("category", "hackathon")
-          .order("year", { ascending: false })
-
-        if (error) throw error
-        setHackathons(data || [])
-      } catch (error) {
-        console.error("Error fetching hackathons:", error)
-      } finally {
-        setLoading(false)
-      }
+    try {
+      const data = (hackathonsData as unknown as Achievement[]).filter(h => h.category === "hackathon")
+      // Sort by year desc (string)
+      data.sort((a, b) => (parseInt(b.year || "0") - parseInt(a.year || "0")))
+      setHackathons(data)
+    } finally {
+      setLoading(false)
     }
-
-    fetchHackathons()
-  }, [supabase])
+  }, [])
 
   if (loading) {
     return (

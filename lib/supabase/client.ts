@@ -1,5 +1,5 @@
-import { createBrowserClient } from "@supabase/ssr"
-
-export function createClient() {
-  return createBrowserClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!)
+// Supabase has been removed from this project.
+// This stub exists to avoid import errors if any old code still references it.
+export function createClient(): never {
+  throw new Error("Supabase has been removed from this project. No database client is available.")
 }

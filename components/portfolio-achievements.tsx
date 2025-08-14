@@ -1,35 +1,26 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { createClient } from "@/lib/supabase/client"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Trophy, Calendar, ExternalLink } from "lucide-react"
 import type { Achievement } from "@/lib/types"
 import Image from "next/image"
+import hackathons from "@/data/hackathons.json"
 
 export default function PortfolioAchievements() {
   const [achievements, setAchievements] = useState<Achievement[]>([])
   const [loading, setLoading] = useState(true)
-  const supabase = createClient()
 
   useEffect(() => {
-    const fetchAchievements = async () => {
-      try {
-        const { data, error } = await supabase.from("achievements").select("*").order("date", { ascending: false })
-
-        if (error) throw error
-        setAchievements(data || [])
-      } catch (error) {
-        console.error("Error fetching achievements:", error)
-      } finally {
-        setLoading(false)
-      }
+    try {
+      const data = (hackathons as unknown as Achievement[]).slice().sort((a, b) => (new Date(b.date || 0).getTime() - new Date(a.date || 0).getTime()))
+      setAchievements(data)
+    } finally {
+      setLoading(false)
     }
-
-    fetchAchievements()
-  }, [supabase])
+  }, [])
 
   if (loading) {
     return (
@@ -56,7 +47,7 @@ export default function PortfolioAchievements() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {achievements.map((achievement) => (
               <Card key={achievement.id} className="group hover:shadow-lg transition-shadow">
-                {achievement.image_url && (
+                {achievement.image_url && achievement.image_url.length > 0 && (
                   <div className="relative h-48 overflow-hidden rounded-t-lg">
                     <Image
                       src={achievement.image_url || "/placeholder.svg"}
