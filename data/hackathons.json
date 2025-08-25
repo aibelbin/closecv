@@ -78,5 +78,25 @@
     "color_gradient": "from-pink-400 to-red-500",
     "created_at": "2025-02-10T00:00:00.000Z",
     "updated_at": "2025-02-11T00:00:00.000Z"
+  },
+  {
+    "id": "2f7e7a68-6a11-4a67-90d7-1e6f1c1a0005",
+    "title": "Eden Hackathon",
+    "description": "Created a heathcare app which does everything a healthcare service would need from booking of appointment to medicine intake recording for elderly",
+    "category": "hackathon",
+    "position": "Second",
+    "year": "2025",
+    "location": "Offline",
+    "project_name": "Poppy",
+    "prize": "₹25,000",
+    "participants": "1000+",
+    "date": "2025-07-25",
+  "image_url": "",
+    "link_url": ".",
+    "github_url": "https://github.com/aibelbin/poppy/",
+    "technologies": ["Next", "Python", "ElevenLabs", "SupaBase","Twilio", "Opencv"],
+    "color_gradient": "from-pink-400 to-red-500",
+    "created_at": "2025-02-10T00:00:00.000Z",
+    "updated_at": "2025-02-11T00:00:00.000Z"
   }
 ]
