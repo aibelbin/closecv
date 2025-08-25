@@ -61,7 +61,7 @@ export default function HeroSection() {
         </motion.h1>
 
         <motion.p variants={itemVariants} className="text-xl md:text-2xl text-gray-400 mb-8">
-          Curious Tinkerer, BCI researcher and an open-source contributor 
+             Ai developer, Ai researcher, Curious Tinkerer 
         </motion.p>
 
         <motion.div variants={itemVariants} className="flex justify-center space-x-6 mb-12">
