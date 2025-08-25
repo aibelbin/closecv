@@ -34,7 +34,6 @@ export default function HackathonStats() {
 
       const calculatedStats: StatItem[] = [
         { id: "1", value: totalWins.toString(), label: "Hackathon Wins", icon: Trophy },
-        { id: "2", value: firstPlaceWins.toString(), label: "First Place", icon: Award },
         { id: "3", value: teamEvents.toString(), label: "Team Events", icon: Users },
         { id: "4", value: soloEvents.toString(), label: "Solo Events", icon: Target }
       ]
