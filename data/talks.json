@@ -16,7 +16,7 @@
     "updated_at": "2024-03-02T00:00:00.000Z"
   },
   {
-    "id": "f1e2d3c4-b5a6-7890-1234-abcdef000001",
+  "id": "f1e2d3c4-b5a6-7890-1234-abcdef000002",
     "title": "Brain Computer Interfacing, Beginners Intro to BCI",
     "type": "Technical Talk",
     "topic": "Brain Computer Interfacing",
@@ -26,10 +26,10 @@
     "achievements": ["200+ Attendees", "Interactive Q&A", "Technical Deep-dive"],
     "color_gradient": "from-red-500 to-orange-500",
     "description": null,
-    "image_url": null,
-    "link_url": null,
-    "created_at": "2024-03-01T00:00:00.000Z",
-    "updated_at": "2024-03-02T00:00:00.000Z"
+  "image_url": null,
+  "link_url": null,
+  "created_at": "2024-03-01T00:00:00.000Z",
+  "updated_at": "2024-03-02T00:00:00.000Z"
   },
   {
     "id": "f1e2d3c4-b5a6-7890-1234-abcdef000003",

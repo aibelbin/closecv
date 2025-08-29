@@ -1,0 +1,112 @@
+[
+  {
+    "id": "11111111-1111-1111-1111-111111111111",
+    "title": "Appam Kunzhi Counter",
+    "description": "This is how I got 200k+ views, a job and a 6 month scholarship, This is a program that works contrary to the malayalam saying 'Appam Thinnal mathi Kuzhi enneda' ",
+    "technologies": ["Python", "TensorFlow", "Computer Vision", "streamlit"],
+    "link_url": "https://github.com/aibelbin/Appam_thinnam",
+    "github_url": "https://github.com/aibelbin/Appam_thinnam",
+    "featured": true,
+    "created_at": "2025-01-01T00:00:00.000Z",
+    "updated_at": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "22222222-2222-2222-2222-222222222222",
+    "title": "Stock Analyzer for over 6k companies",
+    "description": "Bse nse stock analyzer for 6k companies, This program pulls data from nse bse websites and reads the pdfs of quarterly and yearly results using ocr and creates an impresion map for each",
+    "technologies": ["OCR", "FastApi", "SupaBase", "Machine Learning"],
+    "link_url": "https://github.com/aibelbin/StockAnalyzer",
+    "github_url": "https://github.com/aibelbin/StockAnalyzer",
+    "featured": true,
+    "created_at": "2025-01-01T00:00:00.000Z",
+    "updated_at": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "22222222-2222-2222-2222-222222222223",
+    "title": "Finance Tracker for Smart watches",
+    "description": "I created a smart watch app using kotlin and jetpack compose for wear os to track wallet from scratch, Support various watch gestures and sensors",
+    "technologies": ["OCR", "FastApi", "SupaBase", "Machine Learning"],
+    "link_url": "https://github.com/aibelbin/WatchApp",
+    "github_url": "https://github.com/aibelbin/WatchApp",
+    "featured": true,
+    "created_at": "2025-01-01T00:00:00.000Z",
+    "updated_at": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "22222222-2222-2222-2222-22222222242",
+    "title": "Poppy",
+    "description": "A health case assistance app which is integrated with voice, hospital receptions, google maps and calendar to Book, observe, adapt to each patient, This model can call and do everything needed before and after a hospital visit",
+    "technologies": ["Eleven Labs", "FastApi", "SupaBase", "NExtjs"],
+    "link_url": "https://github.com/aibelbin/poppy",
+    "github_url": "https://github.com/aibelbin/poppy",
+    "featured": true,
+    "created_at": "2025-01-01T00:00:00.000Z",
+    "updated_at": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "22222222-2222-222332-2222-2233222222242",
+    "title": "Soup's Space",
+    "description": "A private therapy room for teens, dedicated to the friend I couldnt help when she was still alive ",
+    "technologies": ["Streamlit", "Pdfpy", "Python", "Groq"],
+    "link_url": "https://github.com/aibelbin/soup",
+    "github_url": "https://github.com/aibelbin/soup",
+    "featured": true,
+    "created_at": "2025-01-01T00:00:00.000Z",
+    "updated_at": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "22222222-2222-222332-2222-2233222222242",
+    "title": "Ryo",
+    "description": "A File manager built in QT with dev tools and Ai features for metadata level manipulation ",
+    "technologies": ["Qt", "Python"],
+    "link_url": "https://github.com/aibelbin/ryo",
+    "github_url": "https://github.com/aibelbin/ryo",
+    "featured": true,
+    "created_at": "2025-01-01T00:00:00.000Z",
+    "updated_at": "2025-01-01T00:00:00.000Z"
+  },
+   {
+    "id": "22222222-2222-222332-2222-22332223222242",
+    "title": "4 Legged Angels",
+    "description": "Solving India's street angel dog issue peacefully",
+    "technologies": ["Yolo", "Python", "RaspberryPi"],
+    "link_url": "https://github.com/aibelbin/dogs",
+    "github_url": "https://github.com/aibelbin/dogs",
+    "featured": true,
+    "created_at": "2025-01-01T00:00:00.000Z",
+    "updated_at": "2025-01-01T00:00:00.000Z"
+  },
+   {
+    "id": "22222222-2222-222332-2222-2233222222242",
+    "title": "LogiTech",
+    "description": "LOGISCALE is a revolutionary platform built from scratch that transforms how deliveries occur. While the original challenge focused on slow deliveries, we recognized that reimagining the entire traffic ecosystem would create the most impactful solution. ",
+    "technologies": ["OpenSource Map", "HeatMapping", "SupaBase", "NExtjs"],
+    "link_url": "https://github.com/aibelbin/Logitech",
+    "github_url": "https://github.com/aibelbin/Logitech",
+    "featured": true,
+    "created_at": "2025-01-01T00:00:00.000Z",
+    "updated_at": "2025-01-01T00:00:00.000Z"
+  },
+   {
+    "id": "22222222-2222-222332-2222-22332212222242",
+    "title": "NasaSpaceApps",
+    "description": "This a philanthropic project created for a hackathon. This projects connects restaurants and NGOs around the world to ensure minimal food waste and maximum filled tummies to bed.This app provides a portal for restaurants to donate their unsold healthy food at the end of the day which can then be found by NGOs and then donated to the poor and needy. as simple as that.",
+    "technologies": ["OAuth","FastApi", "SupaBase", "NExtjs"],
+    "link_url": "https://github.com/aibelbin/Nasa_space_apps",
+    "github_url": "https://github.com/aibelbin/Nasa_space_apps",
+    "featured": true,
+    "created_at": "2025-01-01T00:00:00.000Z",
+    "updated_at": "2025-01-01T00:00:00.000Z"
+  },
+   {
+    "id": "22222222-2222-222332-2222-2233222222242",
+    "title": "Num-Plate-Gate",
+    "description": "This is a number plate detection software which opens house gates if the owners car number plate is detected",
+    "technologies": ["Yolo", "Computer Vision", "SupaBase", "NExtjs"],
+    "link_url": "https://github.com/aibelbin/soup",
+    "github_url": "https://github.com/aibelbin/soup",
+    "featured": true,
+    "created_at": "2025-01-01T00:00:00.000Z",
+    "updated_at": "2025-01-01T00:00:00.000Z"
+  }
+]

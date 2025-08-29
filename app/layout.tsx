@@ -17,14 +17,11 @@ export const viewport: Viewport = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className="bg-black" style={{ backgroundColor: '#000000' }}>
-      <body className="bg-black text-white" style={{ backgroundColor: '#000000', color: '#ffffff' }}>
-        {children}
-      </body>
+    <html lang="en" className="dark" suppressHydrationWarning>
+      {/* 'dark' class activates Tailwind dark color tokens so text-card-foreground becomes light; previously it was near-black on a black card making titles invisible */}
+      <body className="bg-black text-white">{children}</body>
     </html>
   )
 }

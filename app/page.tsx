@@ -37,6 +37,7 @@ import type { Achievement } from "@/lib/types"
 import hackathonsData from "@/data/hackathons.json"
 import talksData from "@/data/talks.json"
 import researchData from "@/data/research.json"
+import projectsData from "@/data/projects.json"
 
 
 export default function Portfolio() {
@@ -128,7 +129,7 @@ export default function Portfolio() {
     location: t.location,
     audience: t.audience,
     achievements: t.achievements,
-    color: t.color_gradient || "from-blue-400 to-indigo-500"
+    color_gradient: t.color_gradient || "from-blue-400 to-indigo-500"
   }))
 
   const researchAreas = (researchData as Array<any>).map(r => ({
@@ -137,20 +138,12 @@ export default function Portfolio() {
     icon: (r.icon_name === 'Users' ? Users : Brain)
   }))
 
-  const projects = [
-    {
-      title: "Neural Signal Processing Platform",
-      description: "A comprehensive platform for processing and analyzing neural signals from EEG devices for BCI applications.",
-      tech: ["Python", "TensorFlow", "Signal Processing", "React"],
-      link: "https://github.com/user/neural-platform",
-    },
-    {
-      title: "Elderly Cybersecurity Awareness App", 
-      description: "Mobile application designed to educate elderly users about common cyber threats and prevention strategies.",
-      tech: ["React Native", "Node.js", "PostgreSQL", "Machine Learning"],
-      link: "https://github.com/user/cyber-elderly",
-    },
-  ]
+  const projects = (projectsData as Array<any>).map(p => ({
+    title: p.title,
+    description: p.description,
+    tech: p.technologies || p.tech || [],
+    link: p.link_url || p.github_url || p.link || '#'
+  }))
 
   const skills = [
     "React",
@@ -412,6 +405,78 @@ export default function Portfolio() {
         )}
       </motion.section>
 
+      {/* Projects Section (moved here after Hackathons) */}
+      <motion.section
+        id="projects"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        className="py-20 px-6 max-w-6xl mx-auto"
+      >
+        <motion.h2
+          initial={{ x: 100, opacity: 0 }}
+          whileInView={{ x: 0, opacity: 1 }}
+          className="text-4xl md:text-6xl font-bold mb-12 text-center"
+        >
+          Projects
+        </motion.h2>
+
+        {loading ? (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[...Array(2)].map((_, index) => (
+              <div key={index} className="animate-pulse">
+                <Card className="bg-gray-900 border-gray-800 p-6 h-full">
+                  <div className="h-6 bg-gray-700 rounded mb-3 w-3/4"></div>
+                  <div className="h-4 bg-gray-700 rounded mb-4 w-full"></div>
+                  <div className="flex gap-2 mb-4">
+                    <div className="h-6 bg-gray-700 rounded w-16"></div>
+                    <div className="h-6 bg-gray-700 rounded w-20"></div>
+                    <div className="h-6 bg-gray-700 rounded w-14"></div>
+                  </div>
+                  <div className="h-10 bg-gray-700 rounded w-full"></div>
+                </Card>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {projects.map((project, index) => (
+              <motion.div
+                key={project.title}
+                initial={{ y: 50, opacity: 0 }}
+                whileInView={{ y: 0, opacity: 1 }}
+                transition={{ delay: index * 0.2 }}
+                whileHover={{ y: -10 }}
+              >
+                <Card className="bg-gray-900 border-gray-800 p-6 h-full hover:border-gray-600 transition-colors">
+                  <motion.h3 whileHover={{ scale: 1.05 }} className="text-xl font-bold mb-3 text-white">
+                    {project.title}
+                  </motion.h3>
+                  <p className="text-white mb-4">{project.description}</p>
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {project.tech?.map((tech: string) => (
+                      <Badge key={tech} variant="secondary" className="text-xs">
+                        {tech}
+                      </Badge>
+                    ))}
+                  </div>
+                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                    <a href={project.link || "#"} target="_blank" rel="noopener noreferrer">
+                      <Button
+                        variant="outline"
+                        className="w-full bg-transparent text-white border-gray-600 hover:bg-white hover:text-black transition-colors"
+                      >
+                        <ExternalLink size={16} className="mr-2" />
+                        View Project
+                      </Button>
+                    </a>
+                  </motion.div>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        )}
+      </motion.section>
+
       {/* Talks & Speaking Section */}
       <motion.section
         id="talks"
@@ -458,7 +523,7 @@ export default function Portfolio() {
           ))}
         </motion.div>
 
-        {/* Talks Timeline */}
+        {/* Talks Timeline (styled similar to Hackathons) */}
         <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.4 }} className="mb-16">
           <h3 className="text-3xl font-bold mb-8 text-center">Speaking Engagements</h3>
           <div className="space-y-8">
@@ -467,16 +532,12 @@ export default function Portfolio() {
                 key={talk.title}
                 initial={{ x: index % 2 === 0 ? -100 : 100, opacity: 0 }}
                 whileInView={{ x: 0, opacity: 1 }}
-                transition={{ delay: index * 0.2 }}
+                transition={{ delay: index * 0.15 }}
                 whileHover={{ scale: 1.02, y: -5 }}
                 className="relative"
               >
                 <Card className="bg-gray-900 border-gray-800 p-8 hover:border-green-500 transition-all duration-300 overflow-hidden">
-                  {/* Gradient Background */}
-                  <div
-                    className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${talk.color} opacity-10 rounded-full blur-2xl`}
-                  />
-
+                  <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${talk.color_gradient} opacity-10 rounded-full blur-2xl`} />
                   <div className="relative z-10">
                     <div className="flex flex-col md:flex-row md:items-start justify-between">
                       <div className="flex-1">
@@ -484,24 +545,27 @@ export default function Portfolio() {
                           <motion.div whileHover={{ rotate: 360, scale: 1.2 }} transition={{ duration: 0.6 }}>
                             <Mic size={28} className="text-green-400" />
                           </motion.div>
-                          <Badge className={`bg-gradient-to-r ${talk.color} text-black font-bold px-3 py-1`}>
+                          <Badge className={`bg-gradient-to-r ${talk.color_gradient} text-black font-bold px-3 py-1`}>
                             {talk.type}
                           </Badge>
                         </div>
-
-                        <h3 className={`text-2xl font-bold mb-2 bg-gradient-to-r ${talk.color} bg-clip-text text-transparent`}>{talk.title}</h3>
-                        <h4 className={`text-xl text-green-400 mb-3 bg-gradient-to-r ${talk.color} bg-clip-text text-transparent font-semibold`}>{talk.topic}</h4>
-                        <p className="text-gray-300 mb-4">Audience: {talk.audience}</p>
-
-                        <div className="flex flex-wrap gap-2 mb-4">
-                          {talk.achievements?.map((achievement) => (
-                            <Badge key={achievement} variant="outline" className={`text-xs bg-gradient-to-r ${talk.color} bg-clip-text text-transparent border-gray-600`}>
-                              {achievement}
-                            </Badge>
-                          ))}
-                        </div>
+                        <h3 className="text-2xl font-bold mb-2 text-white">{talk.title}</h3>
+                        {talk.topic && (
+                          <h4 className="text-lg mb-3 font-semibold text-green-400">{talk.topic}</h4>
+                        )}
+                        {talk.audience && (
+                          <p className="text-gray-300 mb-4">Audience: {talk.audience}</p>
+                        )}
+                        {talk.achievements?.length > 0 && (
+                          <div className="flex flex-wrap gap-2 mb-4">
+                            {talk.achievements.map((achievement: string) => (
+                              <Badge key={achievement} variant="outline" className="text-xs border-gray-600 text-gray-300">
+                                {achievement}
+                              </Badge>
+                            ))}
+                          </div>
+                        )}
                       </div>
-
                       <div className="md:ml-8 mt-4 md:mt-0">
                         <div className="text-right space-y-2">
                           <div className="flex items-center justify-end space-x-2 text-sm text-gray-400">
@@ -591,80 +655,7 @@ export default function Portfolio() {
           ))}
         </motion.div>
       </motion.section>
-
-      {/* Projects Section */}
-      <motion.section
-        id="projects"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        className="py-20 px-6 max-w-6xl mx-auto"
-      >
-        <motion.h2
-          initial={{ x: 100, opacity: 0 }}
-          whileInView={{ x: 0, opacity: 1 }}
-          className="text-4xl md:text-6xl font-bold mb-12"
-        >
-          Projects
-        </motion.h2>
-
-        {loading ? (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[...Array(2)].map((_, index) => (
-              <div key={index} className="animate-pulse">
-                <Card className="bg-gray-900 border-gray-800 p-6 h-full">
-                  <div className="h-6 bg-gray-700 rounded mb-3 w-3/4"></div>
-                  <div className="h-4 bg-gray-700 rounded mb-4 w-full"></div>
-                  <div className="flex gap-2 mb-4">
-                    <div className="h-6 bg-gray-700 rounded w-16"></div>
-                    <div className="h-6 bg-gray-700 rounded w-20"></div>
-                    <div className="h-6 bg-gray-700 rounded w-14"></div>
-                  </div>
-                  <div className="h-10 bg-gray-700 rounded w-full"></div>
-                </Card>
-              </div>
-            ))}
-          </div>
-        ) : (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projects.map((project, index) => (
-            <motion.div
-              key={project.title}
-              initial={{ y: 50, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              transition={{ delay: index * 0.2 }}
-              whileHover={{ y: -10 }}
-            >
-              <Card className="bg-gray-900 border-gray-800 p-6 h-full hover:border-gray-600 transition-colors">
-                <motion.h3 whileHover={{ scale: 1.05 }} className="text-xl font-bold mb-3 text-white">
-                  {project.title}
-                </motion.h3>
-                <p className="text-white mb-4">{project.description}</p>
-
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {project.tech?.map((tech) => (
-                    <Badge key={tech} variant="secondary" className="text-xs">
-                      {tech}
-                    </Badge>
-                  ))}
-                </div>
-
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <a href={project.link || "#"} target="_blank" rel="noopener noreferrer">
-                    <Button
-                      variant="outline"
-                      className="w-full bg-transparent text-white border-gray-600 hover:bg-white hover:text-black transition-colors"
-                    >
-                      <ExternalLink size={16} className="mr-2" />
-                      View Project
-                    </Button>
-                  </a>
-                </motion.div>
-              </Card>
-            </motion.div>
-          ))}
-        </div>
-        )}
-      </motion.section>
+  {/* Projects Section moved up below Hackathons */}
 
       {/* Skills Section - Moved to bottom */}
       <motion.section
