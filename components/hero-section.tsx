@@ -68,7 +68,7 @@ export default function HeroSection() {
           {[
             { Icon: Github, link: "https://www.github.com/aibelbin" },
             { Icon: Linkedin, link: "https://www.linkedin.com/in/aibel-bin-zacariah-677660226/" },
-            { Icon: Mail, link: "aibelbinzacariah@gmail.com" },
+            { Icon: Mail, link: "mailto:aibelbinzacariah@gmail.com?subject=Let's%20Connect&body=Hi%20Aibel,%20" },
           ].map(({ Icon, link }, index) => (
             <motion.a
               key={index}

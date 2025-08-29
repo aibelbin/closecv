@@ -146,7 +146,10 @@ export default function Portfolio() {
   }))
 
   const skills = [
-    "React",
+    "Machine Learning",
+    "AI",
+    "Computer Vision",
+    "Agentic AI",
     "Next.js", 
     "TypeScript", 
     "Node.js",
@@ -245,7 +248,7 @@ export default function Portfolio() {
               I am a curious kid who likes to break a few rules and live unconventionally. I build, I break, I learn 
             </p>
             <p className="text-lg text-gray-300 leading-relaxed mb-8">
-              I run on open knowledge and learn everything that I find interesting. I mainly work on Ai development and Research but also interested in Brain computer interfacing, Hardware, 
+              I run on open knowledge and learn everything that I find interesting. I mainly work on Ai development and Research but also interested in Brain computer interfacing, 
               and Cyber and network securities. I have wins over various hackathons and ctfs
             </p>
             <p className="text-lg text-gray-300 leading-relaxed">
@@ -261,8 +264,8 @@ export default function Portfolio() {
           >
             {[
               { icon: Code, label: "Hackathons", desc: "Finding Problems, creating solutions" },
-              { icon: Brain, label: "Ai Research", desc: "Upading and working closely with BCI tech" },
-              { icon: Microscope, label: "Experimenting", desc: "Learning and developing new ais" },
+              { icon: Brain, label: "Ai Research", desc: "Upading and working closely with Ai Models" },
+              { icon: Microscope, label: "Experimenting", desc: "Learning and developing new models" },
               { icon: Laptop, label: "Software", desc: "Proficinent in various langauges" },
             ].map((item, index) => (
               <motion.div
