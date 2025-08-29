@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import {
@@ -46,6 +47,7 @@ export default function Portfolio() {
   const [cursorRipples, setCursorRipples] = useState<Array<{ id: number; x: number; y: number }>>([])
   const [hackathonWins, setHackathonWins] = useState<Achievement[]>([])
   const [loading, setLoading] = useState(true)
+  const [contactOpen, setContactOpen] = useState(false)
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -729,11 +731,42 @@ export default function Portfolio() {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
-          <Button size="lg" className="text-lg px-8 py-4 bg-white text-black hover:bg-gray-100">
+          <Button onClick={() => setContactOpen(true)} size="lg" className="text-lg px-8 py-4 bg-white text-black hover:bg-gray-100">
             <Mail className="mr-2" />
             Get In Touch
           </Button>
         </motion.div>
+
+        <Dialog open={contactOpen} onOpenChange={setContactOpen}>
+          <DialogContent className="bg-gray-950 border-gray-800 text-left">
+            <DialogHeader>
+              <DialogTitle className="text-2xl font-bold">Contact Details</DialogTitle>
+              <DialogDescription className="text-gray-400">
+                Reach out directly or drop an email and I'll respond soon.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4 mt-4">
+              <div>
+                <p className="text-sm uppercase tracking-wide text-gray-500 mb-1">Email</p>
+                <p className="font-mono break-all">aibelbinzacariah@gmail.com</p>
+              </div>
+              <div>
+                <p className="text-sm uppercase tracking-wide text-gray-500 mb-1">LinkedIn</p>
+                <a href="https://www.linkedin.com/in/aibel" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">linkedin.com/in/aibel</a>
+              </div>
+              <div>
+                <p className="text-sm uppercase tracking-wide text-gray-500 mb-1">GitHub</p>
+                <a href="https://github.com/aibelbin" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">github.com/aibelbin</a>
+              </div>
+            </div>
+            <DialogFooter className="mt-6 flex flex-col sm:flex-row gap-3">
+              <Button asChild variant="outline" className="w-full sm:w-auto">
+                <a href="mailto:aibelbinzacariah@gmail.com?subject=Let's%20Connect&body=Hi%20Aibel,%20">Email Me</a>
+              </Button>
+              <Button onClick={() => setContactOpen(false)} className="w-full sm:w-auto bg-white text-black hover:bg-gray-100">Close</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </motion.section>
 
       {/* Footer */}
